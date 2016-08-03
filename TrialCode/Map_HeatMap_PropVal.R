@@ -1,4 +1,6 @@
-# This program analyzes the instruction trace of a Ultimate Random
+# This program Cerates  Heat Map and does NOT WORK - Don't waste time on this.
+# 08022016
+
 
 library(dplyr)
 library(RSQLite)
@@ -13,13 +15,14 @@ library(ggmap)
 
 # examine the files 
 dir()
+setwd("/Users/rajesh/Desktop/Coursera/SpringBoardGithub/StreetCar0719")
 
-# read in thr csv 
-stcar_center<- read_csv("StreetCarParcels_CENTER.csv")
+# read in the csv 
+stcar_center<- read_csv("./streetcarbuffer_parcels/parcel_csv_050616/StreetCarParcels_CENTER.csv")
 
 glimpse(stcar_center)
 View(stcar_center)
-
+ 
 # Function to get data from google servers
 
 #define a function that will process googles server responses for us.
@@ -118,11 +121,12 @@ test2_df  <- data.frame(lg,lt,pval)
 CinciLandVal <-  ggmap(myMap)
 
  
-CinciLandVal + geom_tile(data = test_df,
-                      aes(x = lg, y = lt, alpha = as.numeric( MKTLND/30000)),
+CinciLandVal <- CinciLandVal + geom_tile(data = test2_df,
+                      aes(x = lg, y = lt, alpha = as.numeric( stcar_center$MKTLND/3000)),
                       fill = "red") + theme(axis.title.y = element_blank(), axis.title.x = element_blank())
 
 
+CinciLandVal
 
 
  
