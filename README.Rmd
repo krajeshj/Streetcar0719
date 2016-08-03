@@ -1,0 +1,44 @@
+---
+title: "README.md"
+author: "Rajesh Jagannath"
+date: "August 2, 2016"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+# Streetcar0719
+Steetcar0719 is a directory placing the taxinfo for the capstone project
+
+### OBJECTIVE: 
+Determine the economic impact of the introduction of a Street Car route in the City of Cincinnati. The data is from CAGIS and OpenData Cincinnati.
+
+### DATA-SETS :
+
+* CagisOpenDataQuaterly has  shapefiles (.shx) files. The Address.shx would be the most useful one for rendering on  a map.
+* Data2 is the primary data-set. These contain 10 years worth of Property Taxes from the assessors office. These are CSV files that have been Extracted from 'fixed-width-format' and coverted to .csv file format. Each directory has the file format described in a pdf file.
+
+* treetcarbuffer_parcels has two subdirs
+  + gis_shape_files/gis_shapeFiles_studyarea_Parcels : Used to mark the streetcars parcels
+  + old_csv files                   - they are old in the sense that these where first used for exploratory analysis and many records with no addresses were found 
+* TrialCode :                      Has first R files with which we explored the data 
+  + Read_Position_delimited_File.R  converts fwf to .csv file
+  + ReadShapeFile.R                 Read in streetcarbuffer_parcels/gis_shape_files/gis_shapeFiles_studyarea_Parcels/*_PARCELS.shx shape files and rasterizes them into a plot
+  + Map_HeatMap_PropVal.R           Exploratory Data Analysis to create a density plot based on csv files( old_csv_files were used
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
