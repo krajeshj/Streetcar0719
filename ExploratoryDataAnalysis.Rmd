@@ -1,0 +1,194 @@
+---
+title: "ExploratoryDataAnalysis"
+author: "Rajesh Jagannath"
+date: "August 3, 2016"
+output: github_document
+---
+
+### 1. Introduction
+I am using Datasets provided by Cincinnati Area Geographic Information System (CAGIS). The property tax values for 10 years were provided by the Assessors office in fixed-width format which was then coverted to csv files using R.  A Street car is being introduced in the City of Cincinnati.It economic benefit is being analyzed and forecast in this Project. A Buffer zone has been established around the street-car route. It is further divided into CORE, CENTER and EDGE. Parcels within these buffer zones have been subset. 
+
+### 2. Pre-Procesing 
+This program  reads in the CENTER, EDGE and CORE csv files
+```{r, warning=FALSE, message= FALSE}
+library(dplyr)
+library(RSQLite)
+library(tidyr)
+library(ggplot2)
+library(readr)
+library(stringr)
+library(scales)
+library(mixtools)
+library(readxl)
+library(ggmap)
+```
+
+### 3. Data Loading
+```{r, echo = FALSE}
+setwd("/Users/rajesh/Desktop/Coursera/SpringBoardGithub/StreetCar0719")
+```
+```{r, message=FALSE, warning=FALSE, results='hide'}
+# read in the csv 
+stcar_center <- read_csv("./streetcarbuffer_parcels/parcel_csv_050616/StreetCarParcels_CENTER.csv")
+stcar_core   <- read_csv("./streetcarbuffer_parcels/parcel_csv_050616/StreetCarParcels_CORE.csv")
+stcar_edge   <- read_csv("./streetcarbuffer_parcels/parcel_csv_050616/StreetCarParcels_EDGE.csv")
+```
+### 4. Prepare data 
+Subset some interesting features - PARCELID, Existing Land Use Code, Mkt value of the land/ improvements, Sale Amt., Area  and Acres
+```{r }
+selected_var_v <- c("PARCELID", "EXLUCODE", "MKTLND", "MKTIMP", "MKT_TOTAL_", "SALDAT","SALAMT","FORECL_FLA", "AREA","ACRES")
+
+
+parcelid_center<- stcar_center[selected_var_v]
+parcelid_edge  <- stcar_core[selected_var_v]
+parcelid_core  <- stcar_edge[selected_var_v]
+```
+###5a. Exploratory Analysis on Dataset - CORE
+```{r}
+str(parcelid_core)
+```
+Total number of parcels and the mean Market value of the Land  in CORE
+```{r}
+print(paste("Total number of parcels in CORE", nrow(parcelid_core)))
+print(paste("The mean Market value of the land in CORE", mean(parcelid_core$MKTLND)))
+```
+
+
+
+#### Plot- CORE 
+Most High Value properties are  in the Core buffer area are C- Commercial, VA - , PS - and O- Office
+We need to remove or impute the lone data with LandUse classified as "?"
+One office building has Mkt Land value of 25Million
+
+
+```{r coreplots, echo=FALSE}
+ 
+# Data Layer
+
+  n <-(ggplot)
+# 
+# # Data + Aesthetics Mapping 
+
+# n <-ggplot(data,aes(x= data$Department.Title, y = data$Total.Payments, color=data$Job.Class.Title, alpha=0.4, size=data$Overtime.Pay))
+
+n <- ggplot(parcelid_core,aes(x = factor(parcelid_core$EXLUCODE), y=(parcelid_core$MKTLND/1000), color = factor(parcelid_core$EXLUCODE)))
+  
+# 
+# # Data + aes + Geometries 
+# n <- n + geom_jitter() 
+n <- n + geom_jitter()
+#
+# # Data + Aesthetic Mapping +  Geom + Facets
+# #n <- n + facet_grid(. ~ Department.Title ) 
+# 
+# #Data + Aesthetics + Geoms + Facets + Statistics
+# # ... add a linear regression model here
+# 
+# #Data + Aesthetics + Geoms + Facets + Statistics + Co-ordinates
+# #n <- n + scale_y_discrete(limits=c("00000","120000"), breaks=seq(00000,120000,10000))
+ n <- n + xlab("Existing Land Use Code CORE BUFFER ZONE")
+ n <- n + ylab("Land Market value in 000s")
+# 
+# #Data + Aesthetics + Geoms + Facets + Statistics + Co-ordinates + Theme 
+# n <- n + theme(axis.text.x = element_text(angle=305))
+# 
+ print(n)
+#####
+ 
+```
+
+##5b.Exploratory Analysis on Dataset - CENTER
+Total number of parcels and the mean Market value of the Land  in CENTER
+```{r}
+str(parcelid_center)
+print(paste("Total number of parcels in CENTER", nrow(parcelid_center)))
+print(paste("The mean Market value of the land in CORE", mean(parcelid_center$MKTLND)))
+```
+  
+
+
+
+#### Plot - CENTER
+```{r, echo = FALSE}
+## 6b Plots for CENTER
+#  Data Layer
+
+  n <-(ggplot)
+# 
+# # Data + Aesthetics Mapping 
+
+# n <-ggplot(data,aes(x= data$Department.Title, y = data$Total.Payments, color=data$Job.Class.Title, alpha=0.4, size=data$Overtime.Pay))
+
+n <- ggplot(parcelid_center,aes(x = factor(parcelid_center$EXLUCODE), y=(parcelid_center$MKTLND/1000), color = factor(parcelid_center$EXLUCODE)))
+  
+# 
+# # Data + aes + Geometries 
+# n <- n + geom_jitter() 
+n <- n + geom_jitter()
+#
+# # Data + Aesthetic Mapping +  Geom + Facets
+# #n <- n + facet_grid(. ~ Department.Title ) 
+# 
+# #Data + Aesthetics + Geoms + Facets + Statistics
+# # ... add a linear regression model here
+# 
+# #Data + Aesthetics + Geoms + Facets + Statistics + Co-ordinates
+# #n <- n + scale_y_discrete(limits=c("00000","120000"), breaks=seq(00000,120000,10000))
+ n <- n + xlab("Existing Land Use Code in CENTER BUFFER ZONE")
+ n <- n + ylab("Land Market value in 000s")
+# 
+# #Data + Aesthetics + Geoms + Facets + Statistics + Co-ordinates + Theme 
+# n <- n + theme(axis.text.x = element_text(angle=305))
+# 
+ print(n)
+```
+
+##5c. Exploratory Analysis on Dataset - EDGE
+```{r, echo = FALSE}
+str(parcelid_edge)
+```
+#### Total records in EDGE
+```{r}
+print(paste("Total number of parcels in EDGE", nrow(parcelid_edge)))
+print(paste("The mean  Market value of the land in EDGE", mean(parcelid_edge$MKTLND)))
+```
+
+#### Plot - EDGE
+
+```{r, echo = FALSE}
+### 6c . Including Plots from EDGE
+# Data Layer
+
+  n <-(ggplot)
+# 
+# # Data + Aesthetics Mapping 
+
+# n <-ggplot(data,aes(x= data$Department.Title, y = data$Total.Payments, color=data$Job.Class.Title, alpha=0.4, size=data$Overtime.Pay))
+
+n <- ggplot(parcelid_edge,aes(x = factor(parcelid_edge$EXLUCODE), y=(parcelid_edge$MKTLND/1000), color = factor(parcelid_edge$EXLUCODE)))
+  
+# 
+# # Data + aes + Geometries 
+n <- n + geom_jitter() 
+#
+# # Data + Aesthetic Mapping +  Geom + Facets
+# #n <- n + facet_grid(. ~ Department.Title ) 
+# 
+# #Data + Aesthetics + Geoms + Facets + Statistics
+# # ... add a linear regression model here
+# 
+# #Data + Aesthetics + Geoms + Facets + Statistics + Co-ordinates
+# #n <- n + scale_y_discrete(limits=c("00000","120000"), breaks=seq(00000,120000,10000))
+ n <- n + xlab("Existing Land Use Code in EDGE BUFFER ZONE")
+ n <- n + ylab("Land Market value in 000s")
+# 
+# #Data + Aesthetics + Geoms + Facets + Statistics + Co-ordinates + Theme 
+# n <- n + theme(axis.text.x = element_text(angle=305))
+# 
+ print(n)
+
+
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

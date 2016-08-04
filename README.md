@@ -67,16 +67,25 @@ Hence, there are two camps of opinion -
 
 -   ReadStreetcCarDataSets.R : Read three CSV files in the 1000ft Bufferzones - CORE, CENTER and EDGE We select interesting features form the data from the frame viz.
 
-"PARCELID" Unique identifier Parcel id
-"EXLUCODE" Existing Land Use Code, Multi-family, commercial, Parks
-"MKTLND" Market Value of the Land
-"MKTIMP" Market value of the Improvements
-"MKT\_TOTAL\_" Total Value
-"SALDAT" Sale Date
-"SALAMT" Sale Amount
-"FORECL\_FLA" Foreclosure Flag
-"AREA" Area
-"ACRES Acres
+                              PARCELID   Unique identifier Parcel id   
+
+                              EXLUCODE    Existing Land Use Code, Multi-family, commercial, Parks  
+
+                              MKTLND      Market Value of the Land   
+
+                              MKTIMP      Market value of the Improvements   
+
+                              MKT_TOTAL_  Total Value      
+
+                              SALDAT      Sale Date           
+
+                              SALAMT      Sale Amount        
+
+                              FORECL_FLA  Foreclosure Flag    
+
+                              AREA        Area               
+
+                              ACRES       Acres                                                      
 
 ------------------------------------------------------------------------
 
