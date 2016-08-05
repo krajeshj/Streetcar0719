@@ -5,7 +5,7 @@ August 3, 2016
 
 ### 1. Introduction
 
-I am using Datasets provided by Cincinnati Area Geographic Information System (CAGIS). The property tax values for 10 years were provided by the Assessors office in fixed-width format which was then coverted to csv files using R. A Street car is being introduced in the City of Cincinnati. Its economic benefit is being analyzed and forecast in this Project. A Buffer zone has been established around the street-car route. It is further divided into CORE, CENTER and EDGE. Parcels within these buffer zones have been subset. In the following section we explore the data in 3 csv files by plotting the market Land Value and a count of onbservations catergorized by Existing Land Use Code.
+I am using Datasets provided by Cincinnati Area Geographic Information System (CAGIS). A Street car is being introduced in the City of Cincinnati. Its economic benefit is being analyzed and forecast in this Project. A Buffer zone has been established around the street-car route. It is further divided into CORE, CENTER and EDGEA subset of features have been seleced from the original .csv file. In the following section we explore the data in 3 csv files by plotting the market Land Value and a count of onbservations catergorized by Existing Land Use Code.
 
 ### 2. Pre-Procesing
 
@@ -66,9 +66,11 @@ str(parcelid_core)
 
 Total number of parcels and the mean Market value of the Land in CORE
 
-    ## [1] "Total number of parcels in CORE 1713"
+    ## [1] "Total number of parcels in CORE is          1713"
 
-    ## [1] "The mean Market value of the land in CORE 155471.593695271"
+    ## [1] "The mean Market value of the land in CORE   155471.593695271"
+
+    ## [1] "The count of parcels with 0 MKT value is     427"
 
 #### Plot- CORE
 
@@ -93,9 +95,11 @@ Total number of parcels and the mean Market value of the Land in CENTER
     ##  $ AREA      : num  0 0 0 0 0 0 0 0 0 0 ...
     ##  $ ACRES     : num  0 0 0 0 0 0 0 0 0 0 ...
 
-    ## [1] "Total number of parcels in CENTER 946"
+    ## [1] "Total number of parcels in CENTER is                  946"
 
-    ## [1] "The mean Market value of the land in CORE 146591.532769556"
+    ## [1] "The mean Market value of the land in ENTER            146591.532769556"
+
+    ## [1] "The count of parcels in CENTER  with 0 MKT value is   175"
 
 #### Plot - CENTER
 
@@ -119,16 +123,22 @@ Total number of parcels and the mean Market value of the Land in CENTER
 #### Total records in EDGE
 
 ``` r
-print(paste("Total number of parcels in EDGE", nrow(parcelid_edge)))
+print(paste("Total number of parcels in EDGE is           ", nrow(parcelid_edge)))
 ```
 
-    ## [1] "Total number of parcels in EDGE 1418"
+    ## [1] "Total number of parcels in EDGE is            1418"
 
 ``` r
-print(paste("The mean  Market value of the land in EDGE", mean(parcelid_edge$MKTLND)))
+print(paste("The mean  Market value of the land in EDGE is", mean(parcelid_edge$MKTLND)))
 ```
 
-    ## [1] "The mean  Market value of the land in EDGE 289340.155148096"
+    ## [1] "The mean  Market value of the land in EDGE is 289340.155148096"
+
+``` r
+print(paste("The count of parcels with 0 MKTLND value is  ", length(which(parcelid_edge$MKTLND == 0))))
+```
+
+    ## [1] "The count of parcels with 0 MKTLND value is   69"
 
 #### Plot - EDGE
 

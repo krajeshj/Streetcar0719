@@ -49,8 +49,9 @@ str(parcelid_core)
 ```
 Total number of parcels and the mean Market value of the Land  in CORE
 ```{r, echo = FALSE}
-print(paste("Total number of parcels in CORE", nrow(parcelid_core)))
-print(paste("The mean Market value of the land in CORE", mean(parcelid_core$MKTLND)))
+print(paste("Total number of parcels in CORE is         ", nrow(parcelid_core)))
+print(paste("The mean Market value of the land in CORE  ", mean(parcelid_core$MKTLND)))
+print(paste("The count of parcels with 0 MKT value is    ", length(which(parcelid_core$MKTLND == 0))))
 ```
 
 
@@ -119,8 +120,10 @@ n <- n + geom_jitter()
 Total number of parcels and the mean Market value of the Land  in CENTER
 ```{r, echo = FALSE}
 str(parcelid_center)
-print(paste("Total number of parcels in CENTER", nrow(parcelid_center)))
-print(paste("The mean Market value of the land in CORE", mean(parcelid_center$MKTLND)))
+print(paste("Total number of parcels in CENTER is                 ", nrow(parcelid_center)))
+print(paste("The mean Market value of the land in ENTER           ", mean(parcelid_center$MKTLND)))
+print(paste("The count of parcels in CENTER  with 0 MKT value is  ", length(which(parcelid_center$MKTLND == 0))))
+
 ```
   
 
@@ -188,8 +191,10 @@ str(parcelid_edge)
 ```
 #### Total records in EDGE
 ```{r}
-print(paste("Total number of parcels in EDGE", nrow(parcelid_edge)))
-print(paste("The mean  Market value of the land in EDGE", mean(parcelid_edge$MKTLND)))
+print(paste("Total number of parcels in EDGE is           ", nrow(parcelid_edge)))
+print(paste("The mean  Market value of the land in EDGE is", mean(parcelid_edge$MKTLND)))
+print(paste("The count of parcels with 0 MKTLND value is  ", length(which(parcelid_edge$MKTLND == 0))))
+
 ```
 
 #### Plot - EDGE
