@@ -5,7 +5,7 @@ August 3, 2016
 
 ### 1. Introduction
 
-I am using Datasets provided by Cincinnati Area Geographic Information System (CAGIS). The property tax values for 10 years were provided by the Assessors office in fixed-width format which was then coverted to csv files using R. A Street car is being introduced in the City of Cincinnati.It economic benefit is being analyzed and forecast in this Project. A Buffer zone has been established around the street-car route. It is further divided into CORE, CENTER and EDGE. Parcels within these buffer zones have been subset.
+I am using Datasets provided by Cincinnati Area Geographic Information System (CAGIS). The property tax values for 10 years were provided by the Assessors office in fixed-width format which was then coverted to csv files using R. A Street car is being introduced in the City of Cincinnati. Its economic benefit is being analyzed and forecast in this Project. A Buffer zone has been established around the street-car route. It is further divided into CORE, CENTER and EDGE. Parcels within these buffer zones have been subset. In the following section we explore the data in 3 csv files by plotting the market Land Value and a count of onbservations catergorized by Existing Land Use Code.
 
 ### 2. Pre-Procesing
 
@@ -66,15 +66,7 @@ str(parcelid_core)
 
 Total number of parcels and the mean Market value of the Land in CORE
 
-``` r
-print(paste("Total number of parcels in CORE", nrow(parcelid_core)))
-```
-
     ## [1] "Total number of parcels in CORE 1713"
-
-``` r
-print(paste("The mean Market value of the land in CORE", mean(parcelid_core$MKTLND)))
-```
 
     ## [1] "The mean Market value of the land in CORE 155471.593695271"
 
@@ -82,16 +74,12 @@ print(paste("The mean Market value of the land in CORE", mean(parcelid_core$MKTL
 
 Most High Value properties are in the Core buffer area are C- Commercial, VA - , PS - and O- Office We need to remove or impute the lone data with LandUse classified as "?" One office building has Mkt Land value of 25Million
 
-![](ExploratoryDataAnalysis_files/figure-markdown_github/coreplots-1.png)
+![](ExploratoryDataAnalysis_files/figure-markdown_github/coreplots-1.png)![](ExploratoryDataAnalysis_files/figure-markdown_github/coreplots-2.png)
 
 5b.Exploratory Analysis on Dataset - CENTER
 -------------------------------------------
 
 Total number of parcels and the mean Market value of the Land in CENTER
-
-``` r
-str(parcelid_center)
-```
 
     ## Classes 'tbl_df' and 'data.frame':   946 obs. of  10 variables:
     ##  $ PARCELID  : chr  "007500010007" "007500010005" "007500010008" "007500010009" ...
@@ -105,21 +93,13 @@ str(parcelid_center)
     ##  $ AREA      : num  0 0 0 0 0 0 0 0 0 0 ...
     ##  $ ACRES     : num  0 0 0 0 0 0 0 0 0 0 ...
 
-``` r
-print(paste("Total number of parcels in CENTER", nrow(parcelid_center)))
-```
-
     ## [1] "Total number of parcels in CENTER 946"
-
-``` r
-print(paste("The mean Market value of the land in CORE", mean(parcelid_center$MKTLND)))
-```
 
     ## [1] "The mean Market value of the land in CORE 146591.532769556"
 
 #### Plot - CENTER
 
-![](ExploratoryDataAnalysis_files/figure-markdown_github/unnamed-chunk-8-1.png)
+![](ExploratoryDataAnalysis_files/figure-markdown_github/unnamed-chunk-8-1.png)![](ExploratoryDataAnalysis_files/figure-markdown_github/unnamed-chunk-8-2.png)
 
 5c. Exploratory Analysis on Dataset - EDGE
 ------------------------------------------
@@ -152,6 +132,6 @@ print(paste("The mean  Market value of the land in EDGE", mean(parcelid_edge$MKT
 
 #### Plot - EDGE
 
-![](ExploratoryDataAnalysis_files/figure-markdown_github/unnamed-chunk-11-1.png)
+![](ExploratoryDataAnalysis_files/figure-markdown_github/unnamed-chunk-11-1.png)![](ExploratoryDataAnalysis_files/figure-markdown_github/unnamed-chunk-11-2.png)
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

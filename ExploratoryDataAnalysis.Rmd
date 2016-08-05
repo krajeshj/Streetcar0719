@@ -6,7 +6,7 @@ output: github_document
 ---
 
 ### 1. Introduction
-I am using Datasets provided by Cincinnati Area Geographic Information System (CAGIS). The property tax values for 10 years were provided by the Assessors office in fixed-width format which was then coverted to csv files using R.  A Street car is being introduced in the City of Cincinnati.It economic benefit is being analyzed and forecast in this Project. A Buffer zone has been established around the street-car route. It is further divided into CORE, CENTER and EDGE. Parcels within these buffer zones have been subset. 
+I am using Datasets provided by Cincinnati Area Geographic Information System (CAGIS).  A Street car is being introduced in the City of Cincinnati. Its economic benefit is being analyzed and forecast in this Project. A Buffer zone has been established around the street-car route. It is further divided into CORE, CENTER and EDGEA subset of features  have been seleced from the original .csv file. In the following section we explore the data in 3 csv files by plotting the market Land Value  and a count of onbservations catergorized by Existing Land Use Code.
 
 ### 2. Pre-Procesing 
 This program  reads in the CENTER, EDGE and CORE csv files
@@ -48,7 +48,7 @@ parcelid_core  <- stcar_edge[selected_var_v]
 str(parcelid_core)
 ```
 Total number of parcels and the mean Market value of the Land  in CORE
-```{r}
+```{r, echo = FALSE}
 print(paste("Total number of parcels in CORE", nrow(parcelid_core)))
 print(paste("The mean Market value of the land in CORE", mean(parcelid_core$MKTLND)))
 ```
@@ -91,15 +91,33 @@ n <- n + geom_jitter()
 # 
 # #Data + Aesthetics + Geoms + Facets + Statistics + Co-ordinates + Theme 
 # n <- n + theme(axis.text.x = element_text(angle=305))
-# 
+
  print(n)
+ 
+ m <-(ggplot)
+ # Data + aes 
+ m <- ggplot(parcelid_core, aes(x= factor(parcelid_core$EXLUCODE),fill=factor(parcelid_core$EXLUCODE)))
+ # Data + aes + Geom 
+ m <- m + geom_bar()
+ # Data + aes + geom + facets + stats + Co-ords
+ m <- m + xlab("Existing Land Use Code ")
+ #m <- m + scale_fill_manual(labels=c("?","C - Commercial", "ED - ", "HI - ", "IN - ", "LI -" ,"MF - Multi-Family", "MU - Multi unit", "O - Office space", "PR - ", "PS - ", "PU - ", "SF - Single Family", "TF - Three Family Dwelling ", "VA - "))
+# 
+# Theme
+ m <- m + coord_flip()
+ 
+ m <- m + geom_text(stat="count", color="white", hjust=1.0, size=3,
+            aes(y=..count.., label=..count..))
+
+ print(m)
+ 
 #####
  
 ```
 
 ##5b.Exploratory Analysis on Dataset - CENTER
 Total number of parcels and the mean Market value of the Land  in CENTER
-```{r}
+```{r, echo = FALSE}
 str(parcelid_center)
 print(paste("Total number of parcels in CENTER", nrow(parcelid_center)))
 print(paste("The mean Market value of the land in CORE", mean(parcelid_center$MKTLND)))
@@ -141,6 +159,27 @@ n <- n + geom_jitter()
 # n <- n + theme(axis.text.x = element_text(angle=305))
 # 
  print(n)
+ # Explore - How many NA's are there 
+ 
+ m <-(ggplot)
+ # Data + aes 
+ m <- ggplot(parcelid_center, aes(x= factor(parcelid_center$EXLUCODE),fill=factor(parcelid_center$EXLUCODE)))
+ # Data + aes + Geom 
+ m <- m + geom_bar()
+ # Data + aes + geom + facets + stats + Co-ords
+ m <- m + xlab("Existing Land Use Code ")
+ #m <- m + scale_fill_manual(labels=c("?","C - Commercial", "ED - ", "HI - ", "IN - ", "LI -" ,"MF - Multi-Family", "MU - Multi unit", "O - Office space", "PR - ", "PS - ", "PU - ", "SF - Single Family", "TF - Three Family Dwelling ", "VA - "))
+# 
+# Theme
+m <- m + coord_flip()
+
+# Label the bars
+m <- m + geom_text(stat="count", color="white", hjust=1.0, size=3,
+            aes(y=..count.., label=..count..))
+ 
+ print(m)
+ 
+ 
 ```
 
 ##5c. Exploratory Analysis on Dataset - EDGE
@@ -187,7 +226,21 @@ n <- n + geom_jitter()
 # 
  print(n)
 
-
+m <-(ggplot)
+ # Data + aes 
+ m <- ggplot(parcelid_edge, aes(x= factor(parcelid_edge$EXLUCODE),fill=factor(parcelid_edge$EXLUCODE)))
+ # Data + aes + Geom 
+ m <- m + geom_bar()
+ # Data + aes + geom + facets + stats + Co-ords
+ m <- m + xlab("Existing Land Use Code ")
+ #m <- m + scale_fill_manual(labels=c("?","C - Commercial", "ED - ", "HI - ", "IN - ", "LI -" ,"MF - Multi-Family", "MU - Multi unit", "O - Office space", "PR - ", "PS - ", "PU - ", "SF - Single Family", "TF - Three Family Dwelling ", "VA - "))
+# 
+  # Theme
+ m <- m + coord_flip()
+ 
+ m <- m + geom_text(stat="count", color="white", hjust=1.0, size=3,
+            aes(y=..count.., label=..count..))
+ print(m)
 
 ```
 
