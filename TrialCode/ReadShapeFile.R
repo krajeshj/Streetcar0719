@@ -24,7 +24,7 @@ library(rgdal)
 ###############
 #CENTER PARCELS : Convert shape files to data
 ###############
-shp_file_ctr <- readOGR('/Users/rajesh/Desktop/Coursera/SpringBoardGithub/StreetCar0719/streetcarbuffer_parcels/gis_shape_files/gis_shapeFiles_studyarea_Parcels/CENTER_PARCELS.shx',
+shp_file_ctr <- readOGR('/Users/rajesh/Desktop/Coursera/SpringBoardGithub/StreetCar0719/streetcarbuffer_parcels/gis_shape_files/gis_shapeFiles_studyarea_Parcels/CENTER_PARCELS.shp',
                          layer="CENTER_PARCELS"     )
 proj4string(shp_file_ctr)
 shp_file_ctr <- spTransform(shp_file_ctr, CRS("+proj=longlat +datum=WGS84"))

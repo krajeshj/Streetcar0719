@@ -36,12 +36,15 @@ stcar_edge   <- read_csv("./streetcarbuffer_parcels/parcel_csv_050616/StreetCarP
 ### 4. Prepare data 
 Subset some interesting features - PARCELID, Existing Land Use Code, Mkt value of the land/ improvements, Sale Amt., Area  and Acres
 ```{r }
-selected_var_v <- c("PARCELID", "EXLUCODE", "MKTLND", "MKTIMP", "MKT_TOTAL_", "SALDAT","SALAMT","FORECL_FLA", "AREA","ACRES")
+selected_var_v <- c("PARCELID", "EXLUCODE", "MKTLND", "MKTIMP", "MKT_TOTAL_","ADDRNO","ADDRST", "ADDRSF")
 
 
 parcelid_center<- stcar_center[selected_var_v]
 parcelid_edge  <- stcar_core[selected_var_v]
 parcelid_core  <- stcar_edge[selected_var_v]
+
+# Existing land use code  description
+exlu_desc <- c("? - Unknown","C - Commercial", "ED - Educational ", "HI - heavy Industrial", "IN - Instituitional ", "LI - Light Industrial" ,"MF - Multi-Family", "MU - Mixed use", "O - Office", "PR - Parks and Recreation ", "PS - Public / Semi-Public", "PU - Public utilities", "SF - Single Family", "TF - Two Family Dwelling ", "VA - Vacant")
 ```
 ###5a. Exploratory Analysis on Dataset - CORE
 ```{r}
@@ -102,7 +105,7 @@ n <- n + geom_jitter()
  m <- m + geom_bar()
  # Data + aes + geom + facets + stats + Co-ords
  m <- m + xlab("Existing Land Use Code ")
- #m <- m + scale_fill_manual(labels=c("?","C - Commercial", "ED - ", "HI - ", "IN - ", "LI -" ,"MF - Multi-Family", "MU - Multi unit", "O - Office space", "PR - ", "PS - ", "PU - ", "SF - Single Family", "TF - Three Family Dwelling ", "VA - "))
+ #m <- m + scale_fill_manual(labels=exlu_desc)
 # 
 # Theme
  m <- m + coord_flip()
@@ -171,7 +174,7 @@ n <- n + geom_jitter()
  m <- m + geom_bar()
  # Data + aes + geom + facets + stats + Co-ords
  m <- m + xlab("Existing Land Use Code ")
- #m <- m + scale_fill_manual(labels=c("?","C - Commercial", "ED - ", "HI - ", "IN - ", "LI -" ,"MF - Multi-Family", "MU - Multi unit", "O - Office space", "PR - ", "PS - ", "PU - ", "SF - Single Family", "TF - Three Family Dwelling ", "VA - "))
+ #m <- m + scale_fill_manual(labels=exlu_desc)
 # 
 # Theme
 m <- m + coord_flip()
