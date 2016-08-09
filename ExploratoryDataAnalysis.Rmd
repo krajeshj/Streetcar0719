@@ -92,7 +92,8 @@ n <- n + geom_jitter()
 # #n <- n + scale_y_discrete(limits=c("00000","120000"), breaks=seq(00000,120000,10000))
  n <- n + xlab("Existing Land Use Code CORE BUFFER ZONE")
  n <- n + ylab("Land Market value in 000s")
-# 
+ n <- n + scale_color_discrete(labels=paste(exlu_desc))
+
 # #Data + Aesthetics + Geoms + Facets + Statistics + Co-ordinates + Theme 
 # n <- n + theme(axis.text.x = element_text(angle=305))
 
@@ -138,6 +139,10 @@ print(paste("The count of parcels in CENTER  with 0 MKT value is  ", length(whic
 #### Plot - CENTER
 
 ```{r, echo = FALSE}
+
+exlu_desc <- c("C - Commercial", "ED - Educational ", "HI - heavy Industrial", "IN - Instituitional ", "LI - Light Industrial" ,"MF - Multi-Family", "MU - Mixed use", "O - Office", "PR - Parks and Recreation ", "PS - Public / Semi-Public", "PU - Public utilities", "SF - Single Family", "TF - Two Family Dwelling ", "VA - Vacant")
+
+
 ## 6b Plots for CENTER
 #  Data Layer
 
@@ -164,7 +169,8 @@ n <- n + geom_jitter()
 # #n <- n + scale_y_discrete(limits=c("00000","120000"), breaks=seq(00000,120000,10000))
  n <- n + xlab("Existing Land Use Code in CENTER BUFFER ZONE")
  n <- n + ylab("Land Market value in 000s")
- 
+ n <- n + scale_color_discrete(labels=paste(exlu_desc))
+
  n <- n + scale_fill_discrete(labels=exlu_desc[-1])
  n <- n + guides(fill=guide_legend(reverse=TRUE))
  
@@ -243,7 +249,7 @@ n <- n + geom_jitter()
  n <- n + xlab("Existing Land Use Code in EDGE BUFFER ZONE")
  n <- n + ylab("Land Market value in 000s")
  n <- n + scale_color_discrete(labels=paste(exlu_desc))
- #n <- n + guides(color=guide_legend(reverse=TRUE))
+
  
 # 
 # #Data + Aesthetics + Geoms + Facets + Statistics + Co-ordinates + Theme 
@@ -274,3 +280,24 @@ n <- n + geom_jitter()
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+# 6. Conclusion
+* Exploratory analysis of the three buffer zones on the basis of Existing Land Use classification was done
+     + Distribution of Parcels  vs. Existing Land Use
+     + Market Value of the parcels on the basis of Existing Land Use
+ 
+* The distribution across the Existing Land Use classes is not uniform
+
+
+* Further analysis( Exploratory / Forecast ) indicates parcels with High Mrket Land Value are classified as
+     + C  - Commercial
+     + IN - Instituitional 
+     + MU - Mixed Use
+     + MF - Multi- Family
+     + O  - Office
+     + PS - Public / Semi Public
+     + SF - Single Family
+     + VA - Vacant 
+* Parcels with high Market Land values also imply more Property Tax revenue coming into the City
+   
+   

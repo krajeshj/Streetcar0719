@@ -130,3 +130,22 @@ Total number of parcels and the mean Market value of the Land in CENTER
 ![](ExploratoryDataAnalysis_files/figure-markdown_github/unnamed-chunk-11-1.png)![](ExploratoryDataAnalysis_files/figure-markdown_github/unnamed-chunk-11-2.png)
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+6. Conclusion
+=============
+
+-   Exploratory analysis of the three buffer zone on the basis of Existing Land Use classification was done
+    -   Distribution of Parcels vs. Existing Land Use
+    -   Market Value of the parcels on the basis of Existing Land Use
+-   The distribution across the Existing Land Use classes is not uniform
+
+-   Further analysis( Exploratory / Forecast ) indicates parcels with High Mrket Land Value are classified as
+    -   C - Commercial
+    -   IN - Instituitional
+    -   MU - Mixed Use
+    -   MF - Multi- Family
+    -   O - Office
+    -   PS - Public / Semi Public
+    -   SF - Single Family
+    -   VA - Vacant
+-   Parcels with high Market Land values also imply more Property Tax revenue coming into the City
