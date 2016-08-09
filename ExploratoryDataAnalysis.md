@@ -5,7 +5,7 @@ August 3, 2016
 
 ### 1. Introduction
 
-I am using Datasets provided by Cincinnati Area Geographic Information System (CAGIS). A Street car is being introduced in the City of Cincinnati. Its economic benefit is being analyzed and forecast in this Project. A Buffer zone has been established around the street-car route. It is further divided into CORE, CENTER and EDGEA subset of features have been seleced from the original .csv file. In the following section we explore the data in 3 csv files by plotting the market Land Value and a count of onbservations catergorized by Existing Land Use Code.
+Datasets provided by Cincinnati Area Geographic Information System (CAGIS) are being used in the this project. A Street car is being introduced in the City of Cincinnati. Its economic benefit is being analyzed and forecast in this project. A 1000 ft buffer zone has been established around the street-car route. It is further divided into CORE, CENTER and EDGE buffer zones. A subset of featureshave been seleced from the original .csv file. In the following sections, an exploratory analysis of the parcels in the buffer zone has been performed the market Land Value and a distribution of observations based on Existing Land Use Code has been performed.
 
 ### 2. Pre-Procesing
 
@@ -134,12 +134,12 @@ Note that the `echo = FALSE` parameter was added to the code chunk to prevent pr
 6. Conclusion
 =============
 
--   Exploratory analysis of the three buffer zone on the basis of Existing Land Use classification was done
+-   Exploratory analysis of the three buffer zones on the basis of Existing Land Use classification was done
     -   Distribution of Parcels vs. Existing Land Use
     -   Market Value of the parcels on the basis of Existing Land Use
 -   The distribution across the Existing Land Use classes is not uniform
 
--   Further analysis( Exploratory / Forecast ) indicates parcels with High Mrket Land Value are classified as
+-   Parcels with High Market Land Value are classified as
     -   C - Commercial
     -   IN - Instituitional
     -   MU - Mixed Use
@@ -148,4 +148,5 @@ Note that the `echo = FALSE` parameter was added to the code chunk to prevent pr
     -   PS - Public / Semi Public
     -   SF - Single Family
     -   VA - Vacant
--   Parcels with high Market Land values also imply more Property Tax revenue coming into the City
+-   Parcels with high Market Land values also imply more Property Tax revenue coming into the City of Cincinnati.
+-   Particular attention should be paid to these Existing Land Use parcels when performing the detailed Analysis/Forecast.
