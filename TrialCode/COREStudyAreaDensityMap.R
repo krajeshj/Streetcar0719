@@ -10,6 +10,17 @@ library(scales)
 library(mixtools)
 library(readxl)
 library(ggmap)
+library(googleway)
+
+# library(RJSONIO)
+# library(RCurl)
+# 
+# getGeoData <- function(location){
+#   location <- gsub(' ','+',location)
+#   geo_data <- getURL(paste("https://maps.googleapis.com/maps/api/geocode/json?address=",location,"&key=AIzaSyAwsSUG-nFioXysuzun5VLBFyUQE5h2P4Q", sep=""))
+#   raw_data_2 <- fromJSON(geo_data)
+#   return(raw_data_2)
+# }
 
 # examine the files 
 dir()
@@ -18,6 +29,8 @@ setwd("/Users/rajesh/Desktop/Coursera/SpringBoardGithub/StreetCar0719")
 # read in the csv 
 stcar_core<- read_csv("./streetcarbuffer_parcels/parcel_csv_050616/StreetCarParcels_CORE.csv")
 
+# Google key
+rajesh_key <- "AIzaSyAwsSUG-nFioXysuzun5VLBFyUQE5h2P4Q"
 
 glimpse(stcar_core)
 View(stcar_core)
@@ -25,9 +38,10 @@ View(stcar_core)
 # Function to get data from google servers
 
 #define a function that will process googles server responses for us.
-getGeoDetails <- function(address){   
+getGeoDetails <- function(address, api_key){   
   #use the gecode function to query google servers
-  geo_reply = geocode(address, output='all', messaging=TRUE, override_limit=TRUE)
+  #geo_reply = geocode(address, output='all', messaging=TRUE, override_limit=TRUE)
+   geo_reply = google_geocode(address, key = api_key, simplify= TRUE)
   #now extract the bits that we need from the returned list
   answer <- data.frame(lat=NA, long=NA, accuracy=NA, formatted_address=NA, address_type=NA, status=NA)
   answer$status <- geo_reply$status
@@ -44,17 +58,32 @@ getGeoDetails <- function(address){
   
   #return Na's if we didn't get a match:
   if (geo_reply$status != "OK"){
+    print("Status is not OK !!!!")
     return(answer)
-  }   
-  #else, extract what we need from the Google server reply into a dataframe:
-  answer$lat <- geo_reply$results[[1]]$geometry$location$lat
-  answer$long <- geo_reply$results[[1]]$geometry$location$lng   
-  if (length(geo_reply$results[[1]]$types) > 0){
-    answer$accuracy <- geo_reply$results[[1]]$types[[1]]
-  }
-  answer$address_type <- paste(geo_reply$results[[1]]$types, collapse=',')
-  answer$formatted_address <- geo_reply$results[[1]]$formatted_address
   
+  }   
+  print("Status is  OK !!!!")
+  
+  #else, extract what we need from the Google server reply into a dataframe:
+  # answer$lat <- geo_reply$results[[1]]$geometry$location$lat
+  # answer$long <- geo_reply$results[[1]]$geometry$location$lng   
+   
+  answer$lat <- geo_reply[1]$results$geometry$location$lat[1]
+  answer$long <- geo_reply[1]$results$geometry$location$lng[1]
+  #answer$lat <- geo_reply$results$lat
+  #answer$long <- geo_reply$results$lng 
+   
+  if (length(geo_reply[1]$results$types) > 0){
+    answer$accuracy <- geo_reply[1]$results$types[1]
+  }
+  answer$address_type <- paste(geo_reply[1]$results$types[1], collapse=',')
+  # answer$formatted_address <- geo_reply$results[[1]]$formatted_address
+  answer$formatted_address <- geo_reply[1]$results$formatted_address[1]
+  
+  #print(paste("The lat and long answer is lat ", geo_reply[1]$results$geometry$location$lat))
+  #print(paste("The lat and long answer is long", geo_reply[1]$results$geometry$location$lng))
+  
+  Sys.sleep(.33)
   return(answer)
 }
 
@@ -70,7 +99,6 @@ stcar_core <-mutate(stcar_core, addr_to_geocode = (paste(ADDRNO, ADDRST, ADDRSF,
 #Find the observations iwht "PW" in the ADDRSF field
 # Change this to PKWY
 stcar_core$ADDRSF[c(which(stcar_core$ADDRSF == "PW"))] <- "PKWY"
-
 
 # initialized 
 
@@ -88,8 +116,9 @@ startindex <- 1
 for (ii in seq(startindex, nrow(stcar_core))){
   print(paste("Working on index", ii, "of", nrow(stcar_core)))
   #query the google geocoder - this will pause here if we are over the limit.
-  result = getGeoDetails(stcar_core$addr_to_geocode[ii]) 
-  print(result$status)     
+  result = getGeoDetails(stcar_core$addr_to_geocode[ii], api_key = rajesh_key) 
+  print(result$status)   
+  str(result)
   result$index <- ii
   #append the answer to the results file.
   geocoded <- rbind(geocoded, result)
@@ -105,29 +134,32 @@ myMap <- get_map(location="1208 Sycamore st, Cincinnati,OH", source="google", ma
 
 
 # Get a ggplot object
-CinciMap <- ggmap(myMap) 
+CinciMap        <- ggmap(myMap) 
+CinciDensityMap <- ggmap(myMap)
 
 # provide  data to aestheic mappings
-CinciMap <- CinciMap + geom_point(aes( x = as.numeric(long), y = as.numeric(lat), alpha = 0.5, col = EXLUCODE, size= as.numeric(ACREDEED *10)), data= stcar_core)
+CinciMap <- CinciMap + geom_point(aes( x = as.numeric(long), y = as.numeric(lat), alpha = 0.7, col = EXLUCODE, size= as.numeric(ACREDEED *10)), data= stcar_core)
+
+print(CinciMap)
 
 # Added a layer for density 
-CinciMap <- CinciMap + stat_density2d(
+CinciDensityMap <- CinciDensityMap + stat_density2d(
                           aes(x = as.numeric(long), y = as.numeric(lat), fill = ..level..,
                             alpha = ..level..),
                           bins = 6, geom = "polygon", data = stcar_core)
  
-CinciMap
+print(CinciDensityMap)
 
 # Create a heat map of Land Values 
-CinciLandVal <-  ggmap(myMap)
+#CinciLandVal <-  ggmap(myMap)
 
  
-CinciLandVal <- CinciLandVal + geom_tile(data = stcar_core,inherit.aes = FALSE,
-                      aes(x = as.numeric(long), y = as.numeric(lat), alpha = MKTLND),
-                      fill = "red") + theme(axis.title.y = element_blank(), axis.title.x = element_blank())
+#CinciLandVal <- CinciLandVal + geom_tile(data = stcar_core,inherit.aes = FALSE,
+#                      aes(x = as.numeric(long), y = as.numeric(lat), alpha = MKTLND),
+#                      fill = "red") + theme(axis.title.y = element_blank(), axis.title.x = element_blank())
 
 
-CinciLandVal
+#CinciLandVal
 
 
  
