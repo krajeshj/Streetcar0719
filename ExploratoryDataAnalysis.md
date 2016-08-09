@@ -5,7 +5,7 @@ August 3, 2016
 
 ### 1. Introduction
 
-Datasets provided by Cincinnati Area Geographic Information System (CAGIS) are being used in the this project. A Street car is being introduced in the City of Cincinnati. Its economic benefit is being analyzed and forecast in this project. A 1000 ft buffer zone has been established around the street-car route. It is further divided into CORE, CENTER and EDGE buffer zones. A subset of featureshave been seleced from the original .csv file. In the following sections, an exploratory analysis of the parcels in the buffer zone has been performed the market Land Value and a distribution of observations based on Existing Land Use Code has been performed.
+Datasets provided by Cincinnati Area Geographic Information System (CAGIS) are being used in the this project. A Street car is being introduced in the City of Cincinnati. Its economic benefit is being analyzed and forecast in this project. A 1000 ft buffer zone has been established around the street-car route. It is further divided into CORE, CENTER and EDGE buffer zones. A subset of features has been seleced from the original .csv file. In the following sections, an exploratory analysis of the parcels in the buffer zone has been performed the market Land Value and a distribution of observations based on Existing Land Use Code has been performed.
 
 ### 2. Pre-Procesing
 
