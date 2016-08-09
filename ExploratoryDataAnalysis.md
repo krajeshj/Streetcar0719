@@ -44,6 +44,9 @@ selected_var_v <- c("PARCELID", "EXLUCODE", "MKTLND", "MKTIMP", "MKT_TOTAL_","AD
 parcelid_center<- stcar_center[selected_var_v]
 parcelid_edge  <- stcar_core[selected_var_v]
 parcelid_core  <- stcar_edge[selected_var_v]
+
+# Existing land use code  description
+exlu_desc <- c("?- Unknown", "C - Commercial", "ED - Educational ", "HI - heavy Industrial", "IN - Instituitional ", "LI - Light Industrial" ,"MF - Multi-Family", "MU - Mixed use", "O - Office", "PR - Parks and Recreation ", "PS - Public / Semi-Public", "PU - Public utilities", "SF - Single Family", "TF - Two Family Dwelling ", "VA - Vacant")
 ```
 
 ### 5a. Exploratory Analysis on Dataset - CORE
@@ -116,21 +119,9 @@ Total number of parcels and the mean Market value of the Land in CENTER
 
 #### Total records in EDGE
 
-``` r
-print(paste("Total number of parcels in EDGE is           ", nrow(parcelid_edge)))
-```
-
     ## [1] "Total number of parcels in EDGE is            1418"
 
-``` r
-print(paste("The mean  Market value of the land in EDGE is", mean(parcelid_edge$MKTLND)))
-```
-
     ## [1] "The mean  Market value of the land in EDGE is 289340.155148096"
-
-``` r
-print(paste("The count of parcels with 0 MKTLND value is  ", length(which(parcelid_edge$MKTLND == 0))))
-```
 
     ## [1] "The count of parcels with 0 MKTLND value is   69"
 
