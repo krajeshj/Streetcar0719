@@ -69,9 +69,36 @@ Total number of parcels and the mean Market value of the Land in CORE
 
     ## [1] "Total number of parcels in CORE is          1713"
 
+    ## [1] "Total number of variables in CORE is        8"
+
     ## [1] "The mean Market value of the land in CORE   155471.593695271"
 
     ## [1] "The count of parcels with 0 MKT value is     427"
+
+Distribution of Class Variable Existing Land Use Code
+
+``` r
+# distribution of class variable
+y <- parcelid_core$EXLUCODE
+cbind(freq=table(y), percentage=prop.table(table(y))*100)
+```
+
+    ##    freq  percentage
+    ## ?     1  0.06016847
+    ## C   185 11.13116727
+    ## ED   64  3.85078219
+    ## HI    9  0.54151625
+    ## IN   72  4.33212996
+    ## LI   43  2.58724428
+    ## MF  247 14.86161252
+    ## MU   80  4.81347774
+    ## O    69  4.15162455
+    ## PR   14  0.84235860
+    ## PS  283 17.02767750
+    ## PU    2  0.12033694
+    ## SF  197 11.85318893
+    ## TF   53  3.18892900
+    ## VA  343 20.63778580
 
 #### Plot- CORE
 
@@ -96,13 +123,39 @@ Total number of parcels and the mean Market value of the Land in CENTER
 
     ## [1] "Total number of parcels in CENTER is                  946"
 
-    ## [1] "The mean Market value of the land in ENTER            146591.532769556"
+    ## [1] "Total number of variables in CENTER is                8"
+
+    ## [1] "The mean Market value of the land in CENTER           146591.532769556"
 
     ## [1] "The count of parcels in CENTER  with 0 MKT value is   175"
 
+Distribution of Class Variable Existing Land Use Code
+
+``` r
+# distribution of class variable
+y <- parcelid_center$EXLUCODE
+cbind(freq=table(y), percentage=prop.table(table(y))*100)
+```
+
+    ##    freq percentage
+    ## C   192 20.7119741
+    ## ED    8  0.8629989
+    ## HI   12  1.2944984
+    ## IN   44  4.7464941
+    ## LI   23  2.4811219
+    ## MF  139 14.9946063
+    ## MU   62  6.6882416
+    ## O    61  6.5803668
+    ## PR    3  0.3236246
+    ## PS   97 10.4638619
+    ## PU    3  0.3236246
+    ## SF   54  5.8252427
+    ## TF   36  3.8834951
+    ## VA  193 20.8198490
+
 #### Plot - CENTER
 
-![](ExploratoryDataAnalysis_files/figure-markdown_github/unnamed-chunk-8-1.png)![](ExploratoryDataAnalysis_files/figure-markdown_github/unnamed-chunk-8-2.png)
+![](ExploratoryDataAnalysis_files/figure-markdown_github/unnamed-chunk-10-1.png)![](ExploratoryDataAnalysis_files/figure-markdown_github/unnamed-chunk-10-2.png)
 
 5c. Exploratory Analysis on Dataset - EDGE
 ------------------------------------------
@@ -121,13 +174,38 @@ Total number of parcels and the mean Market value of the Land in CENTER
 
     ## [1] "Total number of parcels in EDGE is            1418"
 
+    ## [1] "Total number of variables in EDGE is          8"
+
     ## [1] "The mean  Market value of the land in EDGE is 289340.155148096"
 
     ## [1] "The count of parcels with 0 MKTLND value is   69"
 
+Distribution of Class Variable Existing Land Use Code
+
+``` r
+# distribution of class variable
+y <- parcelid_edge$EXLUCODE
+cbind(freq=table(y), percentage=prop.table(table(y))*100)
+```
+
+    ##    freq percentage
+    ## C   325 23.1977159
+    ## ED    7  0.4996431
+    ## HI    9  0.6423983
+    ## IN  117  8.3511777
+    ## LI   41  2.9264811
+    ## MF  195 13.9186296
+    ## MU  162 11.5631692
+    ## O    87  6.2098501
+    ## PS  153 10.9207709
+    ## PU    7  0.4996431
+    ## SF   57  4.0685225
+    ## TF   30  2.1413276
+    ## VA  211 15.0606709
+
 #### Plot - EDGE
 
-![](ExploratoryDataAnalysis_files/figure-markdown_github/unnamed-chunk-11-1.png)![](ExploratoryDataAnalysis_files/figure-markdown_github/unnamed-chunk-11-2.png)
+![](ExploratoryDataAnalysis_files/figure-markdown_github/unnamed-chunk-14-1.png)![](ExploratoryDataAnalysis_files/figure-markdown_github/unnamed-chunk-14-2.png)
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 

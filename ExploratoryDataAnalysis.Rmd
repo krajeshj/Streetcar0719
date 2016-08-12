@@ -53,8 +53,19 @@ str(parcelid_core)
 Total number of parcels and the mean Market value of the Land  in CORE
 ```{r, echo = FALSE}
 print(paste("Total number of parcels in CORE is         ", nrow(parcelid_core)))
+print(paste("Total number of variables in CORE is       ", ncol(parcelid_core)))
+
 print(paste("The mean Market value of the land in CORE  ", mean(parcelid_core$MKTLND)))
+
 print(paste("The count of parcels with 0 MKT value is    ", length(which(parcelid_core$MKTLND == 0))))
+```
+Distribution of Class Variable Existing Land Use Code
+
+```{r}
+# distribution of class variable
+y <- parcelid_core$EXLUCODE
+cbind(freq=table(y), percentage=prop.table(table(y))*100)
+
 ```
 
 
@@ -128,8 +139,17 @@ Total number of parcels and the mean Market value of the Land  in CENTER
 ```{r, echo = FALSE}
 str(parcelid_center)
 print(paste("Total number of parcels in CENTER is                 ", nrow(parcelid_center)))
-print(paste("The mean Market value of the land in ENTER           ", mean(parcelid_center$MKTLND)))
+print(paste("Total number of variables in CENTER is               ", ncol(parcelid_center)))
+print(paste("The mean Market value of the land in CENTER          ", mean(parcelid_center$MKTLND)))
 print(paste("The count of parcels in CENTER  with 0 MKT value is  ", length(which(parcelid_center$MKTLND == 0))))
+
+```
+Distribution of Class Variable Existing Land Use Code
+
+```{r}
+# distribution of class variable
+y <- parcelid_center$EXLUCODE
+cbind(freq=table(y), percentage=prop.table(table(y))*100)
 
 ```
   
@@ -210,8 +230,17 @@ str(parcelid_edge)
 #### Total records in EDGE
 ```{r, echo = FALSE}
 print(paste("Total number of parcels in EDGE is           ", nrow(parcelid_edge)))
+print(paste("Total number of variables in EDGE is         ", ncol(parcelid_edge)))
 print(paste("The mean  Market value of the land in EDGE is", mean(parcelid_edge$MKTLND)))
 print(paste("The count of parcels with 0 MKTLND value is  ", length(which(parcelid_edge$MKTLND == 0))))
+
+```
+Distribution of Class Variable Existing Land Use Code
+
+```{r}
+# distribution of class variable
+y <- parcelid_edge$EXLUCODE
+cbind(freq=table(y), percentage=prop.table(table(y))*100)
 
 ```
 
