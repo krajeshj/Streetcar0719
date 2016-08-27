@@ -24,7 +24,7 @@ library(rgdal)
 ###############
 #CENTER PARCELS : Convert shape files to data
 ###############
-shp_file_ctr <- readOGR('/Users/rajesh/Desktop/Coursera/SpringBoardGithub/StreetCar0719/streetcarbuffer_parcels/gis_shape_files/gis_shapeFiles_studyarea_Parcels/CENTER_PARCELS.shp',
+shp_file_ctr <- readOGR('/Users/rajesh/Desktop/Coursera/SpringBoardGithub/StreetCar0719/streetcarbuffer_parcels/gis_shape_files/CENTER_PARCELS.shp',
                          layer="CENTER_PARCELS"     )
 proj4string(shp_file_ctr)
 shp_file_ctr <- spTransform(shp_file_ctr, CRS("+proj=longlat +datum=WGS84"))
@@ -35,7 +35,7 @@ data <- fortify(shp_file_ctr)
 ###############
 #CORE PARCELS : Convert shape files to data
 ###############
-shp_file_core <- readOGR('/Users/rajesh/Desktop/Coursera/SpringBoardGithub/StreetCar0719/streetcarbuffer_parcels/gis_shape_files/gis_shapeFiles_studyarea_Parcels/CORE_PARCELS.shp',
+shp_file_core <- readOGR('/Users/rajesh/Desktop/Coursera/SpringBoardGithub/StreetCar0719/streetcarbuffer_parcels/gis_shape_files/CORE_PARCELS.shp',
                         layer="CORE_PARCELS"     )
 proj4string(shp_file_core)
 shp_file_core <- spTransform(shp_file_core, CRS("+proj=longlat +datum=WGS84"))
@@ -46,7 +46,7 @@ data <- fortify(shp_file_core)
 ###############
 #CORE PARCELS : Convert shape files to data
 ###############
-shp_file_edge <- readOGR('/Users/rajesh/Desktop/Coursera/SpringBoardGithub/StreetCar0719/streetcarbuffer_parcels/gis_shape_files/gis_shapeFiles_studyarea_Parcels/EDGE_PARCELS.shp',
+shp_file_edge <- readOGR('/Users/rajesh/Desktop/Coursera/SpringBoardGithub/StreetCar0719/streetcarbuffer_parcels/gis_shape_files/EDGE_PARCELS.shp',
                          layer="EDGE_PARCELS"     )
 proj4string(shp_file_edge)
 shp_file_edge <- spTransform(shp_file_edge, CRS("+proj=longlat +datum=WGS84"))
@@ -63,7 +63,7 @@ data <- fortify(shp_file_edge)
 myMap <- get_map('1208 Sycamore st.,Cincinnati,OH', zoom = 14, maptype = 'roadmap')
 # Over lay
 ggmap(myMap)+ geom_polygon(aes(x = long, y = lat, group = group ), data = shp_file_ctr,
-              alpha = 0.5, size = .3, fill = 'purple', color = 'white') + geom_polygon(aes(x = long, y = lat, group = group ), data = shp_file_core,
-               alpha = 0.5, size = .3, fill = 'orangered', color = 'white') + geom_polygon(aes(x = long, y = lat, group = group ), data = shp_file_edge,
-               alpha = 0.5, size = .3, fill = 'green', color = 'white') 
+              alpha = 0.8, size = .3, fill = 'purple', color = 'white') + geom_polygon(aes(x = long, y = lat, group = group ), data = shp_file_core,
+               alpha = 0.8, size = .3, fill = 'orangered', color = 'white') + geom_polygon(aes(x = long, y = lat, group = group ), data = shp_file_edge,
+               alpha = 0.8, size = .3, fill = 'green', color = 'white') 
   
