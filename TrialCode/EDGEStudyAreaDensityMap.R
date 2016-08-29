@@ -27,7 +27,8 @@ dir()
 setwd("/Users/rajesh/Desktop/Coursera/SpringBoardGithub/StreetCar0719")
 
 # read in the csv 
-stcar_edge<- read_csv("./streetcarbuffer_parcels/parcel_csv_050616/StreetCarParcels_EDGE.csv")
+#stcar_edge<- read_csv("./streetcarbuffer_parcels/parcel_csv_050616/StreetCarParcels_EDGE.csv")
+stcar_edge<- read_csv("./streetcarbuffer_parcels/parcel_csv_082616/StreetCarParcels_EDGE.csv")
 
 # Google key
 rajesh_key <- "AIzaSyAwsSUG-nFioXysuzun5VLBFyUQE5h2P4Q"
@@ -134,37 +135,33 @@ myMap <- get_map(location="1208 Sycamore st, Cincinnati,OH", source="google", ma
 
 
 # Get a ggplot object
-CinciMap        <- ggmap(myMap) 
-CinciDensityMap <- ggmap(myMap)
+CinciMap              <- ggmap(myMap) 
+CinciGoogleDensityMap <- ggmap(myMap)
+CinciCAGISDensityMap  <- ggmap(myMap)
 
 # provide  data to aestheic mappings
-CinciMap <- CinciMap + geom_point(aes( x = as.numeric(long), y = as.numeric(lat), alpha = 0.7, col = EXLUCODE, size= as.numeric(ACREDEED *10)), data= stcar_edge)
+CinciMap <- CinciMap + geom_point(aes( x = as.numeric(long), y = as.numeric(lat), alpha = 0.7, col = EXLUCODE, size= as.numeric(ACREDEED *10)), data = stcar_edge)
 
 print(CinciMap)
 
 # Added a layer for density 
-CinciDensityMap <- CinciDensityMap + stat_density2d(
-                          aes(x = as.numeric(long), y = as.numeric(lat), fill = ..level..,
-                            alpha = ..level..),
-                          bins = 6, geom = "polygon", data = stcar_edge)
- 
-print(CinciDensityMap)
+CinciGoogleDensityMap <- CinciGoogleDensityMap + stat_density2d(
+  aes(x = as.numeric(long), y = as.numeric(lat), fill = ..level..,
+      alpha = ..level..),
+  bins = 6, geom = "polygon", data = stcar_edge)
 
-# Create a heat map of Land Values 
-#CinciLandVal <-  ggmap(myMap)
-
- 
-#CinciLandVal <- CinciLandVal + geom_tile(data = stcar_edge,inherit.aes = FALSE,
-#                      aes(x = as.numeric(long), y = as.numeric(lat), alpha = MKTLND),
-#                      fill = "red") + theme(axis.title.y = element_blank(), axis.title.x = element_blank())
+print(CinciGoogleDensityMap)
 
 
-#CinciLandVal
+## Without Geocoding plot the CAGIS provided co-ordinates
+
+CinciCAGISDensityMap <- ggmap(myMap)
+CinciCAGISDensityMap <- CinciCAGISDensityMap + stat_density2d(aes(x = as.numeric(cent_long), y = as.numeric(cent_lat), fill = ..level.., alpha = ..level..),
+                                                              bins = 6, geom = "polygon", data = stcar_edge)
+print(CinciCAGISDensityMap)
 
 
  
-
-
  
 # Data Layer
 # n <-(ggplot)
