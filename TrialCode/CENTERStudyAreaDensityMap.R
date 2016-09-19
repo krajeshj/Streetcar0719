@@ -103,9 +103,13 @@ stcar_center <-mutate(stcar_center, addr_to_geocode = (paste(ADDRNO, ADDRST, ADD
 # Change this to PKWY
 stcar_center$ADDRSF[c(which(stcar_center$ADDRSF == "PW"))] <- "PKWY"
 
+<<<<<<< HEAD
 # Some of the parcels with Annual Taxes of 0 are to be removed
 
 # initialize
+=======
+# initialized 
+>>>>>>> b3c7eaa23f5355970380ecddac0527da56ed38fc
 
 #initialise a dataframe to hold the results
 
@@ -128,7 +132,10 @@ for (ii in seq(startindex, nrow(stcar_center))){
   result = getGeoDetails(stcar_center$addr_to_geocode[ii], api_key = rajesh_key) 
   print(result$status)   
   str(result)
+<<<<<<< HEAD
   #str(geocoded)
+=======
+>>>>>>> b3c7eaa23f5355970380ecddac0527da56ed38fc
   result$index <- ii
   #append the answer to the results file.
   geocoded <- rbind(geocoded, result)
@@ -145,8 +152,12 @@ myMap <- get_map(location="1208 Sycamore st, Cincinnati,OH", source="google", ma
 
 # Get a ggplot object
 CinciMap        <- ggmap(myMap) 
+<<<<<<< HEAD
 CinciGoogleDensityMap <- ggmap(myMap)
 CinciCAGISDensityMap <- ggmap(myMap)
+=======
+CinciDensityMap <- ggmap(myMap)
+>>>>>>> b3c7eaa23f5355970380ecddac0527da56ed38fc
 
 # provide  data to aestheic mappings
 CinciMap <- CinciMap + geom_point(aes( x = as.numeric(long), y = as.numeric(lat), alpha = 0.7, col = EXLUCODE, size= as.numeric(ACREDEED *10)), data= stcar_center)
@@ -154,6 +165,7 @@ CinciMap <- CinciMap + geom_point(aes( x = as.numeric(long), y = as.numeric(lat)
 print(CinciMap)
 
 # Added a layer for density 
+<<<<<<< HEAD
 CinciGoogleDensityMap <- CinciGoogleDensityMap + stat_density2d(
   aes(x = as.numeric(long), y = as.numeric(lat), fill = ..level..,
       alpha = ..level..),
@@ -170,6 +182,25 @@ CinciCAGISDensityMap <- CinciCAGISDensityMap + stat_density2d(aes(x = as.numeric
 print(CinciCAGISDensityMap)
 
 
+=======
+CinciDensityMap <- CinciDensityMap + stat_density2d(
+                          aes(x = as.numeric(long), y = as.numeric(lat), fill = ..level..,
+                            alpha = ..level..),
+                          bins = 6, geom = "polygon", data = stcar_center)
+ 
+print(CinciDensityMap)
+
+# Create a heat map of Land Values 
+#CinciLandVal <-  ggmap(myMap)
+
+ 
+#CinciLandVal <- CinciLandVal + geom_tile(data = stcar_center,inherit.aes = FALSE,
+#                      aes(x = as.numeric(long), y = as.numeric(lat), alpha = MKTLND),
+#                      fill = "red") + theme(axis.title.y = element_blank(), axis.title.x = element_blank())
+
+
+#CinciLandVal
+>>>>>>> b3c7eaa23f5355970380ecddac0527da56ed38fc
 
 
  
