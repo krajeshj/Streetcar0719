@@ -79,10 +79,10 @@ convert_fwf2csv <- function(year) {
 
 #convert_fwf2csv("2007")
 #convert_fwf2csv("2008")
-convert_fwf2csv("2009")
-#convert_fwf2csv("2010")
-# convert_fwf2csv("2011")
-# convert_fwf2csv("2012")
-# convert_fwf2csv("2013")
-# convert_fwf2csv("2014")
-#
+#convert_fwf2csv("2009")
+# convert_fwf2csv("2010")
+#  convert_fwf2csv("2011")
+#  convert_fwf2csv("2012")
+#  convert_fwf2csv("2013")
+ convert_fwf2csv("2014")
+

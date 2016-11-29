@@ -15,6 +15,7 @@ library(TSclust)
 library(sqldf)
 library(ClustOfVar)
 library(digest)
+library(zoo)
  
 # set the working dir
 setwd("/Users/rajesh/Desktop/Coursera/SpringBoardGithub/Streetcar0719")
@@ -780,12 +781,13 @@ part100 <- cutreevar(Clustvar100,11)
 
 n <- ncol(taxinfo.matrix_no_na)
 taxinfo.matrix_shuffled <- taxinfo.matrix_no_na[,sample(n) ]
-train_indices <- 1:round(0.01214 * n)
+train_indices <- 1:round(0.024 * n)
 train <- taxinfo.matrix_shuffled[,train_indices ]
 
 #test_indices <- (round(0.214 * n) + 1):2*(round(0.214 * n))
 #test <- taxinfo.matrix_shuffled[,test_indices]
-
+skip_1500 = 1
+if(skip_1500 == 0) {
 Clustvar1500 <-hclustvar(train)
 plot(Clustvar1500)
 
@@ -807,7 +809,13 @@ part1500 <- cutreevar(Clustvar1500,11)
 plot(Clustvar1500$height)
 
 a <- part1500$var
+} else {
+ part100 <- cutreevar(Clustvar100,11)
+ plot(Clustvar100$height)
+ 
+ a <- part100$var
 
+}
 #Remove xs from Parcel ids
 
 
@@ -856,10 +864,46 @@ plot.ts(ts_train_cl1)
 #ts_train_cl1_forecast  <- HoltWinters(ts_train_cl1, beta=FALSE, gamma=FALSE)
 #ts_train_cl1_forecast2 <- forecast.HoltWinters(ts_train_cl1_forecast, h=10)
 
+#Mean absolute Percentage error
+mape <- function(y, yhat) {
+  
+  mean(abs((y - yhat)/y)) 
+}
+
+funggcast<-function(dn,fcast){ 
+  # fuction is from here
+  # http://davenportspatialanalytics.squarespace.com/blog/2012/3/14/plotting-forecast-objects-in-ggplot-part-1-extracting-the-da.html
+  #require(zoo) #needed for the 'as.yearmon()' function
+  fcast<-as.vector(fcast)
+  #en<-max(time(fcast$mean)) #extract the max date used in the forecast
+  en<- ( max( time(fcast)))
+  #Extract Source and Training Data
+  ds<-as.data.frame(window(dn,end=en))
+  names(ds)<-'observed'
+  ds$date<-as.Date(time(window(dn,end=en)))
+  
+  #Extract the Fitted Values (need to figure out how to grab confidence intervals)
+  dfit<-as.data.frame(fcast$fitted)
+  dfit$date<-as.Date(time(fcast$fitted))
+  names(dfit)[1]<-'fitted'
+  
+  ds<-merge(ds,dfit,all.x=T) #Merge fitted values with source and training data
+  
+  #Exract the Forecast values and confidence intervals
+  dfcastn<-as.data.frame(fcast)
+  dfcastn$date<-as.Date(as.yearmon(row.names(dfcastn)))
+  names(dfcastn)<-c('forecast','lo80','hi80','lo95','hi95','date')
+  
+  pd<-merge(ds,dfcastn,all.x=T) #final data.frame for use in ggplot
+  return(pd)
+  
+}
+
+
 #plot.forecast(ts_train_cl1_forecast2)
+# Use Simple moving average for Holtz-Winters 
+# Beta and gamma are set to FALSE
 
-
- 
 forecast_clusters <-function ( clst_num, partvar, taxinfo.matrix  ) {
   arg2 <- partvar[clst_num]
   train_cl_num  <- as.data.frame(row.names(arg2[[1]]), stringsAsFactors = FALSE)
@@ -869,15 +913,20 @@ forecast_clusters <-function ( clst_num, partvar, taxinfo.matrix  ) {
   b_start <- l_start[2] - l_start[1]
   
   ts_train_cl_num_forecast  <- HoltWinters(ts_train_cl_num, beta=FALSE, gamma=FALSE, l.start=l_start[1],b.start = b_start)
+  plot(ts_train_cl_num_forecast)
   ts_train_cl_num_forecast2 <- forecast.HoltWinters(ts_train_cl_num_forecast, h=4)
   
   title <- paste("Mean of MKT_TOTAL_VAL for Cluster ", clst_num)
   #plot.ts(ts_train_cl_num)
   plot.forecast(ts_train_cl_num_forecast2,ylab="MKT_TOTAL_VAL - row means", main=title)
+  
+  
 }
 
+ 
 
-linear_regresion_model1 <- function (clst_num, partvar, taxinfo.matrix) {
+
+mkt_val_lm_forecast <- function (clst_num, partvar, taxinfo.matrix, poly_order) {
   arg2 <- partvar[clst_num]
   train_cl_num  <- as.data.frame(row.names(arg2[[1]]), stringsAsFactors = FALSE)
   train_cl_num  <- apply(train_cl_num,2, function(y) as.character(gsub("X", "", y)))
@@ -888,79 +937,41 @@ linear_regresion_model1 <- function (clst_num, partvar, taxinfo.matrix) {
   #Time <- Time-2010
   
   Future_Time <- c(seq(2007,2018))
-  Future_Time <- data.frame(Future_Time)
-  title <- paste("Mean of MKT_TOTAL_VAL for Cluster ", clst_num)
+  Future_Time <- data.frame(Time = Future_Time  )      
+  
+  if ( poly_order == 1 ){
+  title <- paste("Mean of MKT_TOTAL_VAL for  1st order  & Cluster ", clst_num)
+  }
+  if ( poly_order == 2 ){
+    title <- paste("Mean of MKT_TOTAL_VAL for  2nd order  & Cluster ", clst_num)
+  }
+  if ( poly_order == 3 ){
+    title <- paste("Mean of MKT_TOTAL_VAL for  3rd order  & Cluster ", clst_num)
+  } 
+  if ( poly_order == 4){
+    title <- paste("Mean of MKT_TOTAL_VAL for  4th order  & Cluster ", clst_num)
+  } 
   
   
-  fit_mkt_val <-lm(ts_train_cl_num[1:8] ~ Time)
-  #plot(forecast(fit_mkt_val, h=4), ylab="MKT_TOTAL_VAL - row means", main=title)
-  #plot(predict(fit_mkt_val, newdata=Future_Time), ylab="MKT_TOTAL_VAL - row means", main=title)
-  pred_model <- predict.lm(fit_mkt_val, newdata=Future_Time)
-  #plot(pred_model, ylab="MKT_TOTAL_VAL - row means", main=title)
-  summary(pred_model)
-  
-  # Data Layer
-  n <-(ggplot)
-  #
-  # # Data + Aesthetics Mapping
-  n <-ggplot(data.frame(pred_model),aes(y= pred_model, x = Time, alpha=0.4,col = Time))
-  #
-  # # Data + aes + Geometries
-  #n <- n + geom_line()
-  n <- n + geom_point()
-  #
-  # # Data + Aesthetic Mapping +  Geom + Facets
-  # #n <- n + facet_grid(. ~ Department.Title )
-  #
-  # #Data + Aesthetics + Geoms + Facets + Statistics
-  # # ... add a linear regression model here
-  n <- n + geom_smooth(method="lm", formula = y ~ x)
-  # #Data + Aesthetics + Geoms + Facets + Statistics + Co-ordinates
-  # #n <- n + scale_y_discrete(limits=c("00000","120000"), breaks=seq(00000,120000,10000))
-  n <- n + xlab("Years")
-  n <- n + ylab("MKT_VAL - row means - Linear fit")
-  #
-  # #Data + Aesthetics + Geoms + Facets + Statistics + Co-ordinates + Theme
-  # n <- n + theme(axis.text.x = element_text(angle=305))
-  #
-  n <- n+ ggtitle(title)
-  print(n)
-  
-  
-}
-
-linear_regresion_model2 <- function (clst_num, partvar, taxinfo.matrix) {
-  arg2 <- partvar[clst_num]
-  train_cl_num  <- as.data.frame(row.names(arg2[[1]]), stringsAsFactors = FALSE)
-  train_cl_num  <- apply(train_cl_num,2, function(y) as.character(gsub("X", "", y)))
-  ts_train_cl_num <-ts((rowMeans(taxinfo.matrix[c(train_cl_num)])),start = c(2007))
-  
-  Time <- c(seq(2007,2014))
-  
-  #Time <- Time-2010
-  
-  Future_Time <- c(seq(2007,2018))
-  Future_Time <- data.frame(Future_Time  )      
-
-  
-  title <- paste("Mean of MKT_TOTAL_VAL for  2nd order Cluster ", clst_num)
-  
-  lm_mkt_val2 <-lm(ts_train_cl_num[1:8] ~ poly(Time,2))
-  summary(lm_mkt_val2)
-  #plot(predict(lm_mkt_val2, Future_Time), ylab="MKT_TOTAL_VAL - row means", main=title)
+  lm_mkt_val2 <-lm(ts_train_cl_num[1:8] ~ poly(Time,poly_order))
+   #plot(predict(lm_mkt_val2, Future_Time), ylab="MKT_TOTAL_VAL - row means", main=title)
   pred_model <- predict.lm(lm_mkt_val2, newdata = Future_Time)
+  
    
-  summary(pred_model)
+  df_mkt_val2 <- data.frame(pred_model, Future_Time)
+  
   
   # Data Layer
   n2 <-(ggplot)
   # 
   # # Data + Aesthetics Mapping 
-  n2 <-ggplot(data.frame(pred_model),aes(y = pred_model, x= Time, alpha=0.7, col = Time))
+  n2 <-ggplot(df_mkt_val2,aes(y = pred_model, x= Time, alpha=0.7, col = Time))
+  #n2 <- n2 + ggplot(data.frame(ts_train_cl_num),aes(y = ts_train_cl_num[1:8], x= Time, alpha=0.5, col = as.factor(Time)))
+  
   # 
   # # Data + aes + Geometries 
   n2 <- n2 + geom_point() 
-  n2 <- n2 + geom_line()
+  n2 <- n2 + geom_line(data = df_mkt_val2)
   # 
   # # Data + Aesthetic Mapping +  Geom + Facets
   # #n <- n + facet_grid(. ~ Department.Title ) 
@@ -971,7 +982,7 @@ linear_regresion_model2 <- function (clst_num, partvar, taxinfo.matrix) {
   # #Data + Aesthetics + Geoms + Facets + Statistics + Co-ordinates
   # #n <- n + scale_y_discrete(limits=c("00000","120000"), breaks=seq(00000,120000,10000))
   n2 <- n2 + xlab("Years")
-  n2 <- n2 + ylab("MKT_VAL - row means 2nd order")
+  n2 <- n2 + ylab( " mean MKT_VAL in dollars ")
   # 
   # #Data + Aesthetics + Geoms + Facets + Statistics + Co-ordinates + Theme 
   # n <- n + theme(axis.text.x = element_text(angle=305))
@@ -982,50 +993,131 @@ linear_regresion_model2 <- function (clst_num, partvar, taxinfo.matrix) {
   
 }
 
+# Function to estimate MAPE
+# Mean absolute Percentage error
 
-linear_regresion_model3 <- function (clst_num, partvar, taxinfo.matrix) {
+  mape <- function(y, yhat)
+  mean(abs((y - yhat)/y))
+
+plot_act_pred <- function (clst_num, partvar, taxinfo.matrix, poly_order) {
   arg2 <- partvar[clst_num]
   train_cl_num  <- as.data.frame(row.names(arg2[[1]]), stringsAsFactors = FALSE)
   train_cl_num  <- apply(train_cl_num,2, function(y) as.character(gsub("X", "", y)))
   ts_train_cl_num <-ts((rowMeans(taxinfo.matrix[c(train_cl_num)])),start = c(2007))
   
-  Time <- c(seq(2007,2014))
+  Time <- c(seq(2007,2012))
   
   #Time <- Time-2010
   
   Future_Time <- c(seq(2007,2018))
-  Future_Time <- data.frame(Future_Time  )      
+  Future_Time <- data.frame(Time = Future_Time  )      
   
+ 
   
-  title <- paste("Mean of MKT_TOTAL_VAL for  2nd order Cluster ", clst_num)
-  
-  lm_mkt_val2 <-lm(ts_train_cl_num[1:8] ~ poly(Time,3))
-  summary(lm_mkt_val2)
+  lm_mkt_val2 <-lm(ts_train_cl_num[1:6] ~ poly(Time,poly_order))
+
   #plot(predict(lm_mkt_val2, Future_Time), ylab="MKT_TOTAL_VAL - row means", main=title)
   pred_model <- predict.lm(lm_mkt_val2, newdata = Future_Time)
   
   summary(pred_model)
   
+  df_mkt_val2 <- data.frame(pred_model, Future_Time)
+  
+  #pd <- funggcast(ts_train_cl_num, lm_mkt_val2[1:8])
+  dn <- ts_train_cl_num
+  fcast <- df_mkt_val2
+  # fuction is from here
+  # http://davenportspatialanalytics.squarespace.com/blog/2012/3/14/plotting-forecast-objects-in-ggplot-part-1-extracting-the-da.html
+  #require(zoo) #needed for the 'as.yearmon()' function
+  #fcast<-as.vector(fcast)
+  #en<-max(time(fcast$mean)) #extract the max date used in the forecast
+  en<- max(Future_Time$Time)
+  #Extract Source and Training Data
+  ds<-as.data.frame(window(dn,end=en))
+  names(ds)<-'observed'
+  #ds$date<-as.Date(time(window(dn,end=en)))
+  ds$date<-as.numeric(time(window(ts_train_cl_num,end=en)))
+  
+  #Extract the Fitted Values  
+  dfit<-as.data.frame(fcast$pred_model)
+  dfit$date<-as.numeric(fcast$Time)
+  names(dfit)[1]<-'fitted'
+  
+  
+  
+  ds<-merge(ds,dfit,all.x=TRUE) #Merge fitted values with source and training data
+  
+  # Compute the mape 
+  mape_val <-as.numeric(mape(ds$observed, ds$fitted))
+  
+  df_mape <- data.frame(as.numeric(mape_val), as.numeric(poly_order), as.numeric(clst_num))
+   
+  colnames(df_mape) <- c("mape", "poly_order","cluster")
+   
+  
+    
+
+  
+   
+  
+  # Moving on to Forecast - here is the period for forecast
+  Forecast_Time <- c(seq(2015,2018))
+  Forecast_Time <- data.frame(Time = Forecast_Time  )    
+  
+  pred_model <- predict.lm(lm_mkt_val2, newdata = Forecast_Time)
+  #                                                                                                                                                                                                                             plot(pred_model, ylab="MKT_TOTAL_VAL - row means", main=title)
+ 
+  dfcastn <- data.frame(pred_model, Forecast_Time)
+  names(dfcastn)<-c('forecast','date')
+  
+  # 
+  # #Exract the Forecast values  
+  # dfcastn<-as.data.frame(fcast)
+  # #dfcastn$date<-as.Date(as.yearmon(row.names(dfcastn)))
+  # dfcastn$date<-  as.numeric(fcast$Time)
+  # names(dfcastn)<-c('forecast','lo80','hi80','lo95','hi95','date')
+  # 
+   pd<-merge(ds,dfcastn,all.x=TRUE) #final data.frame for use in ggplot
+  
+  
+   if ( poly_order == 1 ){
+     title <- paste("Mean of MKT_TOTAL_VAL for  1st order  & Cluster ", clst_num, "MAPE - ", mape_val)
+   }
+   if ( poly_order == 2 ){
+     title <- paste("Mean of MKT_TOTAL_VAL for  2nd order  & Cluster ", clst_num, "MAPE - ", mape_val)
+   }
+   if ( poly_order == 3 ){
+     title <- paste("Mean of MKT_TOTAL_VAL for  3rd order  & Cluster ", clst_num, "MAPE - ", mape_val)
+   } 
+  
+  
+  
   # Data Layer
   n2 <-(ggplot)
   # 
   # # Data + Aesthetics Mapping 
-  n2 <-ggplot(data.frame(pred_model),aes(y = pred_model, x= Time, alpha=0.7, col = Time))
+  n2 <-ggplot(ds,aes(y = observed, x= Time, alpha=0.7))
+  #n2 <- n2 + ggplot(data.frame(ts_train_cl_num),aes(y = ts_train_cl_num[1:8], x= Time, alpha=0.5, col = as.factor(Time)))
+  
   # 
   # # Data + aes + Geometries 
   n2 <- n2 + geom_point() 
-  n2 <- n2 + geom_line()
+  n2 <- n2 + geom_line(col = 'red')
+  n2 <- n2 + geom_line(aes(y=fitted),col='blue')
+  #n2 <- n2 + geom_line(aes(y=forecast), col='black') 
+  
+  
   # 
   # # Data + Aesthetic Mapping +  Geom + Facets
   # #n <- n + facet_grid(. ~ Department.Title ) 
   # 
   # #Data + Aesthetics + Geoms + Facets + Statistics
   # # ... add a linear regression model here
-  n2 <- n2 + geom_smooth(method="gam" ) 
+  #n2 <- n2 + geom_smooth(method="gam" ) 
   # #Data + Aesthetics + Geoms + Facets + Statistics + Co-ordinates
   # #n <- n + scale_y_discrete(limits=c("00000","120000"), breaks=seq(00000,120000,10000))
   n2 <- n2 + xlab("Years")
-  n2 <- n2 + ylab("MKT_VAL - row means 2nd order")
+  n2 <- n2 + ylab(" mean MKT_VAL in dollars ")
   # 
   # #Data + Aesthetics + Geoms + Facets + Statistics + Co-ordinates + Theme 
   # n <- n + theme(axis.text.x = element_text(angle=305))
@@ -1033,8 +1125,10 @@ linear_regresion_model3 <- function (clst_num, partvar, taxinfo.matrix) {
   n2 <- n2 + ggtitle(title)
   print(n2)
   
-  
+  return(df_mape)
 }
+
+
 
 linear_regresion_model5 <- function (partvar, taxinfo.matrix, poly_order) {
   
@@ -1048,8 +1142,8 @@ linear_regresion_model5 <- function (partvar, taxinfo.matrix, poly_order) {
   
   Time <- c(seq(2007,2014))
   
-  #Time <- Time-2010
-  
+ 
+    
   Future_Time <- c(seq(2007,2018))
   Future_Time <- data.frame(Time = Future_Time  )      
   title <- paste("Mean of MKT_TOTAL_VAL for Cluster  ", clst_num, " Order - ", poly_order)
@@ -1112,46 +1206,97 @@ linear_regresion_model5 <- function (partvar, taxinfo.matrix, poly_order) {
   n3 <- n3 + ggtitle(title)
   n3 <- n3 +facet_wrap( ~ clst_num)
   print(n3)
+  
+  
+  
   }
   }
   
   
 }
 
+plot_mape_bar_chart<- function(df_mape_all) {
+  
+  # Data Layer
+  n3 <-(ggplot)
+  # 
+  # # Data + Aesthetics Mapping 
+  n3 <-ggplot(df_mape_all,aes( x= poly_order, y = mape, col=as.factor(poly_order)))
+  # 
+  # # Data + aes + Geometries 
+  n3 <- n3 + geom_point() 
+  # 
+  # # Data + Aesthetic Mapping +  Geom + Facets
+  # #n <- n + facet_grid(. ~ Department.Title ) 
+  # 
+  # #Data + Aesthetics + Geoms + Facets + Statistics
+  # # ... add a linear regression model here
+  #n3 <- n3 + geom_smooth(method="gam" ) 
+  # #Data + Aesthetics + Geoms + Facets + Statistics + Co-ordinates
+  # #n <- n + scale_y_discrete(limits=c("00000","120000"), breaks=seq(00000,120000,10000))
+  n3 <- n3 + xlab("Polynomial Order - ( Linear, Quadratic, Cubic)")
+  n3 <- n3 + ylab("Mean Absolute Percentage Error ")
+  
+  
+  # 
+  # #Data + Aesthetics + Geoms + Facets + Statistics + Co-ordinates + Theme 
+  # n <- n + theme(axis.text.x = element_text(angle=305))
+  # 
+  n3 <- n3 + ggtitle("MAPE")
+  n3 <- n3 +facet_wrap( ~ cluster)
+  print(n3)
+  
+  
+  
+  
+}
 
+# Use Holt-Winters  for Simple Moving Average
+for ( clst in c(seq(1:11))) {
+ forecast_clusters(clst,a, taxinfo.matrix)
+ 
+}
+ 
+ 
 
+# we create three models of regressions
+# 1st order - a + T              ( linear)
+# 2nd order a + bT + cT^2        ( quadratic)
+# 3rd order a = bT + cT^2 + dT^3 ( cubic)
 
-for ( clst in c(seq(1:11))) {
-# forecast_clusters(clst,a, taxinfo.matrix)
- 
-}
- 
-for ( clst in c(seq(1:11))) {
+ for( poly_order in c(seq(1:3))){
+  
+  for ( clst in c(seq(1:11))) {
+  #mkt_val_lm_forecast(clst,a, taxinfo.matrix, poly_order)
+  
+  #df_mape_clusters <- plot_act_pred(clst,a, taxinfo.matrix, poly_order)
+  df_mape_clusters <- plot_act_pred(clst,a, taxinfo.matrix[c(1:6),], poly_order)
+  if (clst == 1) {
+    df_mape_clst_poly <- df_mape_clusters
+    }
+  else {
+    df_mape_clst_poly <- bind_rows(df_mape_clst_poly, df_mape_clusters)
+    }
+  }
+  
+  if (poly_order == 1) {
+     df_mape_all <- df_mape_clst_poly
+    } 
+  else 
+     {
+      df_mape_all <- bind_rows(df_mape_all, df_mape_clst_poly)
+  }
    
-  linear_regresion_model1(clst,a, taxinfo.matrix)
    
-  
-}
-for ( clst in c(seq(1:11))) {
    
-  linear_regresion_model2(clst,a, taxinfo.matrix)
- 
-}
-for ( clst in c(seq(1:11))) {
-  
    
-  linear_regresion_model3(clst,a, taxinfo.matrix)
-  
-}
- 
-for( poly_order in c(seq(1:3))){
-  
-  
   linear_regresion_model5(a, taxinfo.matrix, poly_order)
   
   
-  }
+  
+ }
 
+plot_mape_bar_chart(df_mape_all)
 
 stop()
 
@@ -1294,7 +1439,7 @@ df_buffer_CORE <- df_buffer_CORE %>% unite(PARCEL_ID, PARCELID,MLTOWN, sep="")
 
 
 # Now make a selection of the PARCEL_IDs and their coordinates
-buff_zone_features <-c("PARCEL_ID",  "MKT_TOTAL_VAL", "centroid_x", "centroid_y", "cent_long", "cent_lat")
+buff_zone_features <-c("PARCEL_ID",  "MKT_TOTAL_", "centroid_x", "centroid_y", "cent_long", "cent_lat")
 
 df_buffer_CENTER <- select(df_buffer_CENTER, one_of(buff_zone_features))
 df_buffer_EDGE   <- select(df_buffer_EDGE,   one_of(buff_zone_features))

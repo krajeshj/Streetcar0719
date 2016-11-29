@@ -178,7 +178,7 @@ for(year in c(2008)) {
   dim(df_year)
 }
 
-for(year in c(2009)) {
+for(year in c(seq(2009,2014))) {
   print(paste("Processing the year :",year))
   # Form the names of the csv file using year as the iterator
   year_file <- paste0("./Data2_090216/taxinfo/",year,"/taxinfo",year,".csv")
@@ -261,87 +261,87 @@ for(year in c(2009)) {
 }
 
 
-for(year in c(seq(2010,2014))) {
-  print(paste("Processing the year :",year))
-  # Form the names of the csv file using year as the iterator
-  year_file <- paste0("./Data2_090216/taxinfo/",year,"/taxinfo",year,".csv")
-  
-  #Form the variable to assign to
-  df_year <- paste0("df_taxinfo_",year)
-  print(df_year)
-  
-  # Assign to a data fram
-  # assign(df_year, read_csv(year_file))
-  
-  
-  assign (df_year, read_csv(year_file, col_types = cols(SMDA_NUM = "c",
-                                                        UNIT = "c",
-                                                        LOC_STREET = "c",
-                                                        LOC_HOUSE_NO = "c",
-                                                        LOC_SEC_NO = "c",
-                                                        LOC_ST_DESC = "c",
-                                                        LOC_ST_IND = "c",
-                                                        LOC_ST_DIR = "c",
-                                                        TAX_DIST = "c",
-                                                        SCHOOL_CODE = "c",
-                                                        CLASS_CODE = "c",
-                                                        OWNER_LINE1 = "c",
-                                                        OWNER_LINE2 = "c",
-                                                        OWNER_LINE3 = "c",
-                                                        OWNER_LINE4 = "c",
-                                                        MAIL_LINE1 = "c",
-                                                        MAIL_LINE2 = "c",
-                                                        MAIL_LINE3 = "c",
-                                                        MAIL_LINE4 = "c",
-                                                        PROPERTY_DESCRIPTION1 = "c",
-                                                        PROPERTY_DESCRIPTION2 = "c",
-                                                        PROPERTY_DESCRIPTION3 = "c",
-                                                        PROPERTY_DESCRIPTION4 = "c",
-                                                        BOR_FLAG = "c",
-                                                        VALID_SALE = "c",
-                                                        MKT_LAND_VAL = "d",
-                                                        HMSTD_FLAG = "c",
-                                                        FILL_01 = "c",
-                                                        NUM_PARCELS = "c",
-                                                        CAUV_VALUE = "c",
-                                                        RED_25_FLAG = "c",
-                                                        BANK_CODE = "c",
-                                                        FILL_02 = "c",
-                                                        DEED_TYPE = "c",
-                                                        MKT_IMPR_VAL = "d",
-                                                        DIV_FLAG = "c",
-                                                        SALE_AMOUNT = "c",
-                                                        MKT_TOTAL_VAL = "d",
-                                                        NEW_CONS_FLAG = "c",
-                                                        SALE_DATE = "c",
-                                                        FORECL_FLAG = "c",
-                                                        CONVEY_NO = "c",
-                                                        SPEC_FLAG = "c",
-                                                        FILL_03 = "c",
-                                                        DEED_NUMBER = "c",
-                                                        ANNUAL_TAXES = "d",
-                                                        FRONT_FOOTAGE = "c",
-                                                        ACRES = "d",
-                                                        TAXES_PAID = "d",
-                                                        FOX_DELETED = "c",
-                                                        PAR_DELETED = "c",
-                                                        PARCEL_ID = "c",
-                                                        OWNER_SORT = "c",
-                                                        DELQ_TAXES = "d",
-                                                        ZIPCODE = "c",
-                                                        RentalRegSw = "c",
-                                                        AppraisalArea="c"))
-          
-  )
-  
-  
-  problems(df_year)
-  
-  
-  
-  #assign(df_taxinfo_2007, df_taxinfo_2007 %>% select(one_of(features_selected)))
-  dim(df_year)
-}
+# for(year in c(seq(2010,2014))) {
+#   print(paste("Processing the year :",year))
+#   # Form the names of the csv file using year as the iterator
+#   year_file <- paste0("./Data2_090216/taxinfo/",year,"/taxinfo",year,".csv")
+#   
+#   #Form the variable to assign to
+#   df_year <- paste0("df_taxinfo_",year)
+#   print(df_year)
+#   
+#   # Assign to a data fram
+#   # assign(df_year, read_csv(year_file))
+#   
+#   
+#   assign (df_year, read_csv(year_file, col_types = cols(SMDA_NUM = "c",
+#                                                         UNIT = "c",
+#                                                         LOC_STREET = "c",
+#                                                         LOC_HOUSE_NO = "c",
+#                                                         LOC_SEC_NO = "c",
+#                                                         LOC_ST_DESC = "c",
+#                                                         LOC_ST_IND = "c",
+#                                                         LOC_ST_DIR = "c",
+#                                                         TAX_DIST = "c",
+#                                                         SCHOOL_CODE = "c",
+#                                                         CLASS_CODE = "c",
+#                                                         OWNER_LINE1 = "c",
+#                                                         OWNER_LINE2 = "c",
+#                                                         OWNER_LINE3 = "c",
+#                                                         OWNER_LINE4 = "c",
+#                                                         MAIL_LINE1 = "c",
+#                                                         MAIL_LINE2 = "c",
+#                                                         MAIL_LINE3 = "c",
+#                                                         MAIL_LINE4 = "c",
+#                                                         PROPERTY_DESCRIPTION1 = "c",
+#                                                         PROPERTY_DESCRIPTION2 = "c",
+#                                                         PROPERTY_DESCRIPTION3 = "c",
+#                                                         PROPERTY_DESCRIPTION4 = "c",
+#                                                         BOR_FLAG = "c",
+#                                                         VALID_SALE = "c",
+#                                                         MKT_LAND_VAL = "d",
+#                                                         HMSTD_FLAG = "c",
+#                                                         FILL_01 = "c",
+#                                                         NUM_PARCELS = "c",
+#                                                         CAUV_VALUE = "c",
+#                                                         RED_25_FLAG = "c",
+#                                                         BANK_CODE = "c",
+#                                                         FILL_02 = "c",
+#                                                         DEED_TYPE = "c",
+#                                                         MKT_IMPR_VAL = "d",
+#                                                         DIV_FLAG = "c",
+#                                                         SALE_AMOUNT = "c",
+#                                                         MKT_TOTAL_VAL = "d",
+#                                                         NEW_CONS_FLAG = "c",
+#                                                         SALE_DATE = "c",
+#                                                         FORECL_FLAG = "c",
+#                                                         CONVEY_NO = "c",
+#                                                         SPEC_FLAG = "c",
+#                                                         FILL_03 = "c",
+#                                                         DEED_NUMBER = "c",
+#                                                         ANNUAL_TAXES = "d",
+#                                                         FRONT_FOOTAGE = "c",
+#                                                         ACRES = "d",
+#                                                         TAXES_PAID = "d",
+#                                                         FOX_DELETED = "c",
+#                                                         PAR_DELETED = "c",
+#                                                         PARCEL_ID = "c",
+#                                                         OWNER_SORT = "c",
+#                                                         DELQ_TAXES = "d",
+#                                                         ZIPCODE = "c",
+#                                                         RentalRegSw = "c",
+#                                                         AppraisalArea="c"))
+#           
+#   )
+#   
+#   
+#   problems(df_year)
+#   
+#   
+#   
+#   #assign(df_taxinfo_2007, df_taxinfo_2007 %>% select(one_of(features_selected)))
+#   dim(df_year)
+# }
 for(year in c(2015)) {
   print(paste("Processing the year :",year))
   # Form the names of the csv file using year as the iterator
@@ -530,19 +530,88 @@ df_taxinfo_2009$TAXES_PAID<-as.numeric(df_taxinfo_2009$TAXES_PAID)
 df_taxinfo_2009$DELQ_TAXES<-as.numeric(df_taxinfo_2009$DELQ_TAXES)
 df_taxinfo_2009$ACRES<-as.numeric(df_taxinfo_2009$ACRES)
 
-# REMOVE the records for which the ANNUAL_TAXES == 0
-df_taxinfo_2007 <- df_taxinfo_2007[c(which(df_taxinfo_2007$ANNUAL_TAXES > 0)),]
-df_taxinfo_2008 <- df_taxinfo_2008[c(which(df_taxinfo_2008$ANNUAL_TAXES > 0)),]
-df_taxinfo_2009 <- df_taxinfo_2009[c(which(df_taxinfo_2009$ANNUAL_TAXES > 0)),]
-df_taxinfo_2010 <- df_taxinfo_2010[c(which(df_taxinfo_2010$ANNUAL_TAXES > 0)),]
-df_taxinfo_2011 <- df_taxinfo_2011[c(which(df_taxinfo_2011$ANNUAL_TAXES > 0)),]
-df_taxinfo_2012 <- df_taxinfo_2012[c(which(df_taxinfo_2012$ANNUAL_TAXES > 0)),]
-df_taxinfo_2013 <- df_taxinfo_2013[c(which(df_taxinfo_2013$ANNUAL_TAXES > 0)),]
-df_taxinfo_2014 <- df_taxinfo_2014[c(which(df_taxinfo_2014$ANNUAL_TAXES > 0)),]
-df_taxinfo_2015 <- df_taxinfo_2015[c(which(df_taxinfo_2015$ANNUAL_TAXES > 0)),]
+ 
+df_taxinfo_2010$MKT_LAND_VAL<-as.numeric(df_taxinfo_2010$MKT_LAND_VAL)
+df_taxinfo_2010$MKT_IMPR_VAL<-as.numeric(df_taxinfo_2010$MKT_IMPR_VAL)
+df_taxinfo_2010$MKT_TOTAL_VAL<-as.numeric(df_taxinfo_2010$MKT_TOTAL_VAL)
+df_taxinfo_2010$ANNUAL_TAXES<-as.numeric(df_taxinfo_2010$ANNUAL_TAXES)
+df_taxinfo_2010$TAXES_PAID<-as.numeric(df_taxinfo_2010$TAXES_PAID)
+df_taxinfo_2010$DELQ_TAXES<-as.numeric(df_taxinfo_2010$DELQ_TAXES)
+df_taxinfo_2010$ACRES<-as.numeric(df_taxinfo_2010$ACRES)
 
-# Some data in 2013 was just not right 
 
+df_taxinfo_2011$MKT_LAND_VAL<-as.numeric(df_taxinfo_2011$MKT_LAND_VAL)
+df_taxinfo_2011$MKT_IMPR_VAL<-as.numeric(df_taxinfo_2011$MKT_IMPR_VAL)
+df_taxinfo_2011$MKT_TOTAL_VAL<-as.numeric(df_taxinfo_2011$MKT_TOTAL_VAL)
+df_taxinfo_2011$ANNUAL_TAXES<-as.numeric(df_taxinfo_2011$ANNUAL_TAXES)
+df_taxinfo_2011$TAXES_PAID<-as.numeric(df_taxinfo_2011$TAXES_PAID)
+df_taxinfo_2011$DELQ_TAXES<-as.numeric(df_taxinfo_2011$DELQ_TAXES)
+df_taxinfo_2011$ACRES<-as.numeric(df_taxinfo_2011$ACRES)
+
+
+df_taxinfo_2012$MKT_LAND_VAL<-as.numeric(df_taxinfo_2012$MKT_LAND_VAL)
+df_taxinfo_2012$MKT_IMPR_VAL<-as.numeric(df_taxinfo_2012$MKT_IMPR_VAL)
+df_taxinfo_2012$MKT_TOTAL_VAL<-as.numeric(df_taxinfo_2012$MKT_TOTAL_VAL)
+df_taxinfo_2012$ANNUAL_TAXES<-as.numeric(df_taxinfo_2012$ANNUAL_TAXES)
+df_taxinfo_2012$TAXES_PAID<-as.numeric(df_taxinfo_2012$TAXES_PAID)
+df_taxinfo_2012$DELQ_TAXES<-as.numeric(df_taxinfo_2012$DELQ_TAXES)
+df_taxinfo_2012$ACRES<-as.numeric(df_taxinfo_2012$ACRES)
+
+df_taxinfo_2013$MKT_LAND_VAL<-as.numeric(df_taxinfo_2013$MKT_LAND_VAL)
+df_taxinfo_2013$MKT_IMPR_VAL<-as.numeric(df_taxinfo_2013$MKT_IMPR_VAL)
+df_taxinfo_2013$MKT_TOTAL_VAL<-as.numeric(df_taxinfo_2013$MKT_TOTAL_VAL)
+df_taxinfo_2013$ANNUAL_TAXES<-as.numeric(df_taxinfo_2013$ANNUAL_TAXES)
+df_taxinfo_2013$TAXES_PAID<-as.numeric(df_taxinfo_2013$TAXES_PAID)
+df_taxinfo_2013$DELQ_TAXES<-as.numeric(df_taxinfo_2013$DELQ_TAXES)
+df_taxinfo_2013$ACRES<-as.numeric(df_taxinfo_2013$ACRES)
+
+df_taxinfo_2014$MKT_LAND_VAL<-as.numeric(df_taxinfo_2014$MKT_LAND_VAL)
+df_taxinfo_2014$MKT_IMPR_VAL<-as.numeric(df_taxinfo_2014$MKT_IMPR_VAL)
+df_taxinfo_2014$MKT_TOTAL_VAL<-as.numeric(df_taxinfo_2014$MKT_TOTAL_VAL)
+df_taxinfo_2014$ANNUAL_TAXES<-as.numeric(df_taxinfo_2014$ANNUAL_TAXES)
+df_taxinfo_2014$TAXES_PAID<-as.numeric(df_taxinfo_2014$TAXES_PAID)
+df_taxinfo_2014$DELQ_TAXES<-as.numeric(df_taxinfo_2014$DELQ_TAXES)
+df_taxinfo_2014$ACRES<-as.numeric(df_taxinfo_2014$ACRES)
+
+
+
+
+# # REMOVE the records for which the ANNUAL_TAXES == 0
+# df_taxinfo_2007 <- df_taxinfo_2007[c(which(df_taxinfo_2007$ANNUAL_TAXES > 0)),]
+# df_taxinfo_2008 <- df_taxinfo_2008[c(which(df_taxinfo_2008$ANNUAL_TAXES > 0)),]
+# df_taxinfo_2009 <- df_taxinfo_2009[c(which(df_taxinfo_2009$ANNUAL_TAXES > 0)),]
+# df_taxinfo_2010 <- df_taxinfo_2010[c(which(df_taxinfo_2010$ANNUAL_TAXES > 0)),]
+# df_taxinfo_2011 <- df_taxinfo_2011[c(which(df_taxinfo_2011$ANNUAL_TAXES > 0)),]
+# df_taxinfo_2012 <- df_taxinfo_2012[c(which(df_taxinfo_2012$ANNUAL_TAXES > 0)),]
+# df_taxinfo_2013 <- df_taxinfo_2013[c(which(df_taxinfo_2013$ANNUAL_TAXES > 0)),]
+# df_taxinfo_2014 <- df_taxinfo_2014[c(which(df_taxinfo_2014$ANNUAL_TAXES > 0)),]
+# df_taxinfo_2015 <- df_taxinfo_2015[c(which(df_taxinfo_2015$ANNUAL_TAXES > 0)),]
+
+
+
+# # REMOVE the records for which the MKT_TOTAL_VAL == 0
+ df_taxinfo_2007 <- df_taxinfo_2007[c(which(df_taxinfo_2007$MKT_LAND_VAL > 0)),]
+ df_taxinfo_2008 <- df_taxinfo_2008[c(which(df_taxinfo_2008$MKT_LAND_VAL > 0)),]
+ df_taxinfo_2009 <- df_taxinfo_2009[c(which(df_taxinfo_2009$MKT_LAND_VAL > 0)),]
+ df_taxinfo_2010 <- df_taxinfo_2010[c(which(df_taxinfo_2010$MKT_LAND_VAL > 0)),]
+ df_taxinfo_2011 <- df_taxinfo_2011[c(which(df_taxinfo_2011$MKT_LAND_VAL > 0)),]
+ df_taxinfo_2012 <- df_taxinfo_2012[c(which(df_taxinfo_2012$MKT_LAND_VAL > 0)),]
+ df_taxinfo_2013 <- df_taxinfo_2013[c(which(df_taxinfo_2013$MKT_LAND_VAL > 0)),]
+ df_taxinfo_2014 <- df_taxinfo_2014[c(which(df_taxinfo_2014$MKT_LAND_VAL > 0)),]
+ df_taxinfo_2015 <- df_taxinfo_2015[c(which(df_taxinfo_2015$MKT_LAND_VAL > 0)),]
+
+  # REMOVE the records for which the ANNUAL_TAXES == 0
+  df_taxinfo_2007 <- df_taxinfo_2007[c(which(df_taxinfo_2007$ANNUAL_TAXES > 100)),]
+  df_taxinfo_2008 <- df_taxinfo_2008[c(which(df_taxinfo_2008$ANNUAL_TAXES > 100)),]
+  df_taxinfo_2009 <- df_taxinfo_2009[c(which(df_taxinfo_2009$ANNUAL_TAXES > 100)),]
+  df_taxinfo_2010 <- df_taxinfo_2010[c(which(df_taxinfo_2010$ANNUAL_TAXES > 100)),]
+  df_taxinfo_2011 <- df_taxinfo_2011[c(which(df_taxinfo_2011$ANNUAL_TAXES > 100)),]
+  df_taxinfo_2012 <- df_taxinfo_2012[c(which(df_taxinfo_2012$ANNUAL_TAXES > 100)),]
+  df_taxinfo_2013 <- df_taxinfo_2013[c(which(df_taxinfo_2013$ANNUAL_TAXES > 100)),]
+  df_taxinfo_2014 <- df_taxinfo_2014[c(which(df_taxinfo_2014$ANNUAL_TAXES > 100)),]
+  df_taxinfo_2015 <- df_taxinfo_2015[c(which(df_taxinfo_2015$ANNUAL_TAXES > 100)),]
+
+ 
 
 #Date coversions
 # The date coversions could not be done in a foreachloop
@@ -684,106 +753,323 @@ taxinfo.matrix_scl <-scale(taxinfo.matrix_uniq, scale=TRUE, center=TRUE)
 # we had found 1 column
 taxinfo.matrix_no_na <- taxinfo.matrix_scl[, colSums(is.na(taxinfo.matrix_scl)) != nrow(taxinfo.matrix_scl)]
 
-
+# For illustartive purposes we choose first 10 columns
 Clustvar <-hclustvar(taxinfo.matrix_no_na[, 1:10])
 plot(Clustvar)
-
+#then first 100 columns
 Clustvar100 <-hclustvar(taxinfo.matrix_no_na[, 1:100])
 plot(Clustvar100)
-
-Clustvar1000 <-hclustvar(taxinfo.matrix_no_na[, 1:1000])
-plot(Clustvar1000)
-
+plot(Clustvar100$height)
+stab100 <- stability(Clustvar100,B = 60, graph = TRUE)
 
 
-Clustvar1 <-hclustvar(taxinfo.matrix_no_na[, 1:10000])
-plot(Clustvar1)
+#Now let's get some  random PARCEL_IDs
+# About 1500 should do
+
+n <- ncol(taxinfo.matrix_no_na)
+taxinfo.matrix_shuffled <- taxinfo.matrix_no_na[,sample(n) ]
+train_indices <- 1:round(0.0214 * n)
+train <- taxinfo.matrix_shuffled[,train_indices ]
+
+#test_indices <- (round(0.214 * n) + 1):2*(round(0.214 * n))
+#test <- taxinfo.matrix_shuffled[,test_indices]
+
+Clustvar1500 <-hclustvar(train)
+plot(Clustvar1500)
+
+#####
+# B is the Boot strapping sample and we determine the stability
+# Evaluates the stability of partitions obtained from a hierarchy of p variables. This hierarchy is performed
+# with hclustvar and the stability of the partitions of 2 to p-1 clusters is evaluated with a
+# bootstrap approach. The boostrap approch is the following: hclustvar is applied to B boostrap
+# samples of the n rows. The partitions of 2 to p-1 clusters obtained from the B bootstrap hierarchies
+# are compared with the partitions from the initial hierarchy . The mean of the corrected Rand
+# indices is plotted according to the number of clusters. This graphical representation helps in the
+# determination of a suitable numbers of clusters.
+
+#stab <- stability(Clustvar1500,B = 10, graph = TRUE)
 
 
-Clustvar2 <-hclustvar(taxinfo.matrix_no_na[, 1:40000])
-plot(Clustvar2)
+# Could not get a graph : Make a rough partition of 15 clusters
+part <- cutreevar(Clustvar1500,15)
+
+a <- part$var
+
+#Remove xs from Parcel ids
 
 
-Clustvar3 <-hclustvar(taxinfo.matrix_no_na)
-plot(Clustvar3)
+train_cl1  <- as.data.frame(row.names(a$cluster1), stringsAsFactors = FALSE)
+train_cl2  <- as.data.frame(row.names(a$cluster2), stringsAsFactors = FALSE)
+train_cl3  <- as.data.frame(row.names(a$cluster3), stringsAsFactors = FALSE)
+train_cl4  <- as.data.frame(row.names(a$cluster4), stringsAsFactors = FALSE)
+train_cl5  <- as.data.frame(row.names(a$cluster5), stringsAsFactors = FALSE)
+train_cl6  <- as.data.frame(row.names(a$cluster6), stringsAsFactors = FALSE)
+train_cl7  <- as.data.frame(row.names(a$cluster7), stringsAsFactors = FALSE)
+train_cl8  <- as.data.frame(row.names(a$cluster8), stringsAsFactors = FALSE)
+train_cl9  <- as.data.frame(row.names(a$cluster9), stringsAsFactors = FALSE)
+train_cl10 <- as.data.frame(row.names(a$cluster10), stringsAsFactors = FALSE)
+train_cl11 <- as.data.frame(row.names(a$cluster11), stringsAsFactors = FALSE)
+train_cl12 <- as.data.frame(row.names(a$cluster12), stringsAsFactors = FALSE)
+train_cl13 <- as.data.frame(row.names(a$cluster13), stringsAsFactors = FALSE)
+train_cl14 <- as.data.frame(row.names(a$cluster14), stringsAsFactors = FALSE)
+train_cl15 <- as.data.frame(row.names(a$cluster15), stringsAsFactors = FALSE)
 
-stop()
-# Function to calculate dissimilarity matrix
-
-calculate.ts.dist <- function(taxinfo.matrix){
-  #Calculates the dissimilarity matrix via the Autocorrelation method (ACF)
-  #Input: A matrix of Annual taxes  dimension
-  #         (YEAR) x (PARCELID)
-  #Output:A matrix of dissimilarity computations of length 
+# Remove X's from the PARCEL IDs
+train_cl1  <- apply(train_cl1,2, function(y) as.character(gsub("X", "", y)))
+train_cl2  <- apply(train_cl2,2, function(y) as.character(gsub("X", "", y)))
+train_cl3  <- apply(train_cl3,2, function(y) as.character(gsub("X", "", y)))
+train_cl4  <- apply(train_cl4,2, function(y) as.character(gsub("X", "", y)))
+train_cl5  <- apply(train_cl5,2, function(y) as.character(gsub("X", "", y)))
+train_cl6  <- apply(train_cl6,2, function(y) as.character(gsub("X", "", y)))
+train_cl7  <- apply(train_cl7,2, function(y) as.character(gsub("X", "", y)))
+train_cl8  <- apply(train_cl8,2, function(y) as.character(gsub("X", "", y)))
+train_cl9  <- apply(train_cl9,2, function(y) as.character(gsub("X", "", y)))
+train_cl10 <- apply(train_cl10,2, function(y) as.character(gsub("X", "", y)))
+train_cl11 <- apply(train_cl11,2, function(y) as.character(gsub("X", "", y)))
+train_cl12 <- apply(train_cl12,2, function(y) as.character(gsub("X", "", y)))
+train_cl13 <- apply(train_cl13,2, function(y) as.character(gsub("X", "", y)))
+train_cl14 <- apply(train_cl14,2, function(y) as.character(gsub("X", "", y)))
+train_cl15 <- apply(train_cl15,2, function(y) as.character(gsub("X", "", y)))
   
-  
- tsdist<- taxinfo.matrix
+
+
+# From each of the clusters get back the time series data
+
+#ts_train_cl1 <-ts(rowMeans(taxinfo.matrix[c(train_cl1)]))
+#plot.ts(ts_train_cl1)
+# Perform Holts Winters Smoothing and Forecast
+
+#ts_train_cl1_forecast  <- HoltWinters(ts_train_cl1, beta=FALSE, gamma=FALSE)
+#ts_train_cl1_forecast2 <- forecast.HoltWinters(ts_train_cl1_forecast, h=10)
+
+#plot.forecast(ts_train_cl1_forecast2)
+
+
  
- #Remove the year ( column 1)
- taxinfo.matrix[,1] <- NULL
+forecast_clusters <-function ( clst_num, partvar, taxinfo.matrix  ) {
+   arg2 <- partvar[clst_num]
+  train_cl_num  <- as.data.frame(row.names(arg2[[1]]), stringsAsFactors = FALSE)
+  train_cl_num  <- apply(train_cl_num,2, function(y) as.character(gsub("X", "", y)))
+  ts_train_cl_num <-ts(rowMeans(taxinfo.matrix[c(train_cl_num)]))
+  ts_train_cl_num_forecast  <- HoltWinters(ts_train_cl_num, beta=FALSE, gamma=FALSE)
+  ts_train_cl_num_forecast2 <- forecast.HoltWinters(ts_train_cl_num_forecast, h=10)
+  title <- paste("Mean of ANNUAL TAXES for Cluster ", clst_num)
+  plot.forecast(ts_train_cl_num_forecast2,ylab="ANNUAL TAXES - row means", main=title)
+ }
+
+for ( clst in c(seq(1:15))) {
+ forecast_clusters(clst,a, taxinfo.matrix)
+}
+ 
+
+### Perform analysis on the 
+# Core PARCEL Ids.
+###
+
+for(zone in c("CENTER", "EDGE")) {
+  print(paste("Processing the zone :",zone))
+  # Form the names of the csv file using year as the iterator
+  buffer_zone_file <- paste0("./Data2_090216/parcel_csv/StreetCarParcels_",zone,".csv")
   
-   tsdist<-scale(tsdist) #standardising data points
+  #Form the variable to assign to
+  df_buffer_zone <- paste0("df_buffer_",zone)
+  print(df_buffer_zone)
   
-  # if there are any columns with na's we remove it
-  # we had found 1 column
-  df_tsdist <- tsdist[, colSums(is.na(tsdist)) != nrow(tsdist)]
+  # Assign to a data fram
+  # assign(df_year, read_csv(year_file))
   
-  tsdist_diss<- diss(df_tsdist, "ACF", p=0.05)
-   
-  return(tsdist_diss)
+  assign (df_buffer_zone, read_csv(buffer_zone_file, col_types = cols(GRPPCLID = "c",
+                                                               BOOK = "c",
+                                                               PAGE = "c",
+                                                               PARCEL = "c",
+                                                               MLTOWN = "c",
+                                                               PARCELID = "c",
+                                                               PNTPCLID = "c",
+                                                               PROPTYID = "c",
+                                                               AUDPCLID = "c",
+                                                               AUDPTYID = "c",
+                                                               TAXDST = "c",
+                                                               OWNER6 = "c",
+                                                               OWNNM1 = "c",
+                                                               OWNNM2 = "c",
+                                                               OWNAD1 = "c",
+                                                               OWNAD1A = "c",
+                                                               OWNAD2 = "c",
+                                                               LGLDS1 = "c",
+                                                               LGLDS2 = "c",
+                                                               LGLDS3 = "c",
+                                                               PREVOWN1 = "c",
+                                                               PREVOWN2 = "c",
+                                                               SPLFLG = "c",
+                                                               NEWFLG = "c",
+                                                               MKTLND = "c",
+                                                               MKTIMP = "c",
+                                                               MKTCAU = "c",
+                                                               CLASS = "c",
+                                                               NHBDNO = "c",
+                                                               ADDRNO = "c",
+                                                               ADDRST = "c",
+                                                               ADDRSF = "c",
+                                                               BANKCD = "c",
+                                                               MLNM1 = "c",
+                                                               MLNM2 = "c",
+                                                               MLADR1 = "c",
+                                                               MLADR1A = "c",
+                                                               MLADR2 = "c",
+                                                               CNTDUE = "c",
+  DLNQDT= "c",	CNTSTG= "c",	CNTTRM= "c",	CNTFLG= "c",	RECST= "c",	SALDAT= "c",	NUMPCL= "c",	SALTYP= "c",	SALAMT= "c",	SALSRC= "c",
+  VALID= "c",	SALCNV= "c",	DEEDNO= "c",	INSTTY= "c",	ACREDEED= "c",	LOC_ST_IND= "c",	LOC_ST_DIR= "c",	LOC_SEC_NO= "c",
+  SCHOOL_COD= "c",	BOR_FLAG= "c",	HMSD_FLAG= "c",	PARSTAT= "c",	RED_25_FLA= "c",	DIV_FLAG= "c",	MKT_TOTAL_= "c",
+  FORECL_FLA= "c",	ANNUAL_TAX= "c",	FRONT_FOOT= "c",	TAXES_PAID= "c",	PAR_DELETE= "c",	DELQ_TAXES= "c",
+  LGLDS4= "c",	CONVEY_NO= "c",	OWNER48= "c",	EXLUCODE= "c",	NUM_UNITS= "c",	TAXDST_DIS= "c",	DATE_CREAT= "c",
+  OWNADCITY= "c",	OWNADSTATE= "c",	OWNADZIP= "c",	APPRAR= "c",	APPRAR_DIS= "c",	CONBUILD_F= "c",
+  CURYR_FLAG= "c",	RENT_REG_F= "c",	SCHOOL_C_1= "c",	DELQ_TAX_1= "c",
+  Shape_Leng= "d",	Shape_Area= "d",	centroid_x= "d",	centroid_y= "d",	cent_long= "d",	cent_lat= "d")
+                                                               
+                                                      ))
+  
+  
+  problems(df_buffer_zone)
+  
+  
+  
+  #assign(df_taxinfo_2007, df_taxinfo_2007 %>% select(one_of(features_selected)))
+  dim(df_buffer_zone)
+}
+
+for(zone in c("CORE")) {
+  print(paste("Processing the zone :",zone))
+  # Form the names of the csv file using year as the iterator
+  buffer_zone_file <- paste0("./Data2_090216/parcel_csv/StreetCarParcels_",zone,".csv")
+  
+  #Form the variable to assign to
+  df_buffer_zone <- paste0("df_buffer_",zone)
+  print(df_buffer_zone)
+  
+  # Assign to a data fram
+  # assign(df_year, read_csv(year_file))
+  
+  assign (df_buffer_zone, read_csv(buffer_zone_file, col_types = cols(GRPPCLID = "c",
+                                                                      MLTOWN = "c",
+                                                                      PARCELID = "c",
+                                                                      PNTPCLID = "c",
+                                                                      TAXDST = "c",
+                                                                      OWNNM1 = "c",
+                                                                      PREVOWN1 = "c",
+                                                                      NEWFLG = "c",
+                                                                      MKTLND = "c",
+                                                                      MKTIMP = "c",
+                                                                      MKTCAU = "c",
+                                                                      CLASS = "c",
+                                                                      NHBDNO = "c",
+                                                                      ADDRNO = "c",
+                                                                      ADDRST = "c",
+                                                                      ADDRSF = "c",
+                                                                      BANKCD = "c",
+                                                                      MLNM1 = "c",
+                                                                      MLNM2 = "c",
+                                                                      MLADR1 = "c",
+                                                                      MLADR1A = "c",
+                                                                      MLADR2 = "c",
+                                                                      CNTDUE = "c",
+                                                                      DLNQDT= "c",	CNTSTG= "c",	CNTTRM= "c",	CNTFLG= "c",	RECST= "c",	SALDAT= "c",	NUMPCL= "c",	SALTYP= "c",	SALAMT= "c",	SALSRC= "c",
+                                                                      VALID= "c",	SALCNV= "c",	DEEDNO= "c",	INSTTY= "c",	ACREDEED= "c",	LOC_ST_IND= "c",	LOC_ST_DIR= "c",	LOC_SEC_NO= "c",
+                                                                      SCHOOL_COD= "c",	BOR_FLAG= "c",	HMSD_FLAG= "c",	PARSTAT= "c",	RED_25_FLA= "c",	DIV_FLAG= "c",	MKT_TOTAL_= "c",
+                                                                      FORECL_FLA= "c",	ANNUAL_TAX= "c",	FRONT_FOOT= "c",	TAXES_PAID= "c",	PAR_DELETE= "c",	DELQ_TAXES= "c",
+                                                                      LGLDS4= "c",	CONVEY_NO= "c",	OWNER48= "c",	EXLUCODE= "c",	NUM_UNITS= "c",	TAXDST_DIS= "c",	DATE_CREAT= "c",
+                                                                      OWNADCITY= "c",	OWNADSTATE= "c",	OWNADZIP= "c",	APPRAR= "c",	APPRAR_DIS= "c",	CONBUILD_F= "c",
+                                                                      CURYR_FLAG= "c",	RENT_REG_F= "c",	SCHOOL_C_1= "c",	DELQ_TAX_1= "c",
+                                                                      Shape_Leng= "d",	Shape_Area= "d",	centroid_x= "d",	centroid_y= "d",	cent_long= "d",	cent_lat= "d")
+                                   
+  ))
+  
+  
+  problems(df_buffer_zone)
+  
+  
+  
+  #assign(df_taxinfo_2007, df_taxinfo_2007 %>% select(one_of(features_selected)))
+  dim(df_buffer_zone)
 }
 
 
+#create the parcelid from c(BOOK_NUM, PAGE_NUM, PARCEL_NUM, MLT_NUM)
+df_buffer_CENTER <- df_buffer_CENTER %>% unite(PARCEL_ID, BOOK, PAGE,PARCEL,MLTOWN, sep="")
+df_buffer_EDGE <- df_buffer_EDGE %>% unite(PARCEL_ID, BOOK, PAGE,PARCEL,MLTOWN, sep="")
+df_buffer_CORE <- df_buffer_CORE %>% unite(PARCEL_ID, PARCELID,MLTOWN, sep="")
 
 
-#Perform and plot hierarchical clustering based on dissimilarity computation of yearly annual taxes
-tsdist.complete<-calculate.ts.dist(taxinfo.matrix)
-sqldf('select PARCEL_ID from df_annual_taxes where ANNUAL_TAXES == "2684.09"')
+# Now make a selection of the PARCEL_IDs and their coordinates
+buff_zone_features <-c("PARCEL_ID",  "ANNUAL_TAX", "centroid_x", "centroid_y", "cent_long", "cent_lat")
 
-multiple_ann_taxes <- sqldf('select * from df_annual_taxes where ANNUAL_TAXES in (select ANNUAL_TAXES from df_annual_taxes group by ANNUAL_TAXES having count(*) > 1) group by PARCEL_ID')
+df_buffer_CENTER <- select(df_buffer_CENTER, one_of(buff_zone_features))
+df_buffer_EDGE   <- select(df_buffer_EDGE,   one_of(buff_zone_features))
+df_buffer_CORE   <- select(df_buffer_CORE,   one_of(buff_zone_features))
 
-multiple_ann_taxes <- sqldf('select * from df_annual_taxes where ANNUAL_TAXES in (select ANNUAL_TAXES from df_annual_taxes group by ANNUAL_TAXES having count(*) > 1) group by PARCEL_ID')
+# Now remove the Parcels with 0 ANNUAL _TAXES
 
-hc<-hclust(tsdist.complete)
-plot(hc)
-
-
-#Upon visual inspection of the cluster plot, I decide to cluster the data into 2 clusters
-rect.hclust(hc,k=2)
-clust.vec <- cutree(hc,k=2)
-clust.vec[hc$order]
-
-#Remove the year ( column 1)
-taxinfo.matrix.wodate <- taxinfo.matrix[,-1]
-
-##Creating clusters
-cluster1 <- taxinfo.matrix.wodate[clust.vec==1,]
-cluster2 <- taxinfo.matrix.wodate[clust.vec==2,]
-#cluster3 <- taxinfo.matrix.wodate[clust.vec==3,]
- 
-##Force clusters in a ts() object
-cluster1.ts <-ts(rowMeans(cluster1),frequency=1)
-cluster2.ts <-ts(rowMeans(cluster2),frequency=1)
-#cluster3.ts <-ts(rowMeans(cluster3),frequency=1)
-cluster_all <- ts(rowMeans(taxinfo.matrix.wodate))
-
-library(tseries)
-#Test for stationarity by performing ADF test
-# adf.test(cluster1.ts, alternative='stationary', k=5)#Dickey-Fuller = -5.279, Lag order = 5, p-value = 0.01
-# adf.test(cluster2.ts, alternative='stationary', k=5) #Dickey-Fuller = -5.2943, Lag order = 5, p-value = 0.01
-#adf.test(cluster3.ts, alternative='stationary', k=5) #Dickey-Fuller = -5.3377, Lag order = 5, p-value = 0.01
- 
-
-adf.test(cluster_all, alternative='stationary')#Dickey-Fuller = -6.669, Lag order = 2, p-value = 0.01
-adf.test(cluster_all, alternative='explosive')#Dickey-Fuller = -6.669, Lag order = 2, p-value = 0.99ts
+df_buffer_CENTER <- df_buffer_CENTER[c(which(as.numeric(df_buffer_CENTER$ANNUAL_TAX) > 0)),]
+df_buffer_EDGE <-   df_buffer_EDGE[c(which(as.numeric(df_buffer_EDGE$ANNUAL_TAX) > 0)),]
+df_buffer_CORE <-   df_buffer_CORE[c(which(as.numeric(df_buffer_CORE$ANNUAL_TAX) > 0)),]
 
 
-#It is observed that  cluster has  a clear seasonal pattern for period length of 52 weeks.
-#Hence, the seasonal order for ARIMA modeling will be defaulted to 'seasonal= list(order = c(0,1,0), period = 52'
-#To find the optimal pdq coeffecients for the trend component, run the following function for each cluster
+# Now lets add the ZONEs in the respective data frames
 
-tsdisplay(cluster_all)
+#Lets add the Year to the data frame
 
-library(tseries)
+len <- length(df_buffer_CENTER$PARCEL_ID)
+df_buffer_CENTER$DF_BUFFER_ZONE<-unlist(rep("CENTER",times =len))
+df_buffer_CENTER$DF_BUFFER_ZONE <-as.character(df_buffer_CENTER$DF_BUFFER_ZONE)
 
-#optimal.pdq(0,1,0,cluster_all) 
+len <- length(df_buffer_EDGE$PARCEL_ID)
+df_buffer_EDGE$DF_BUFFER_ZONE<-unlist(rep("EDGE",times =len))
+df_buffer_EDGE$DF_BUFFER_ZONE <-as.character(df_buffer_EDGE$DF_BUFFER_ZONE)
+
+len <- length(df_buffer_CORE$PARCEL_ID)
+df_buffer_CORE$DF_BUFFER_ZONE<-unlist(rep("CORE",times =len))
+df_buffer_CORE$DF_BUFFER_ZONE <-as.character(df_buffer_CORE$DF_BUFFER_ZONE)
+
+# Now row-bind all the buffer zones together
+df_buffer_zone_all <- bind_rows(df_buffer_CORE, df_buffer_CENTER, df_buffer_EDGE)
+
+# Remove all the Parcels with 0 Annual Taxes
+df_buffer_zone_all <- df_buffer_zone_all[c(which(as.numeric(df_buffer_zone_all$ANNUAL_TAX) > 0)),]
+
+# Remove ANNUAL_TAX field 
+df_buffer_zone_all$ANNUAL_TAX  <- NULL
+
+# reshape by parcel id
+reshape.by.parcelid <- function(df_annual_taxes){
+  #Reshape the train data into a matrix containing the yearly ANNUAL_TAXES for each parcel id
+  #This is preparation required for time series clustering
+  #Input: Train dataset which contain multiple rows x 1 column variables
+  #Output: Matrix of 9 YEARLY  TAXES observations x 300,000 PARCEL_IDs
+  
+  # Instead of using reshap, we are using spread.
+  #taxinfo_matrix <- reshape(df_annual_taxes, v.names="ANNUAL_TAXES", idvar="DF_TAXINFO_YEAR", timevar="PARCEL_ID", direction="wide")
+  
+  # 
+  taxinfo_matrix <- df_annual_taxes  %>% spread("PARCEL_ID", value="ANNUAL_TAXES", fill=as.numeric(0))
+  if (any(is.na(unlist(taxinfo_matrix)))) {
+    stop("NA in taxinfo_matrix")
+  }
+  
+  # retain only parcel ids with complete 8 years of data
+  # we call this nz_taxinfo_matri - nz_ being non_zero
+ # nz_taxinfo_matrix <- taxinfo_matrix[,apply(taxinfo_matrix[c(1:ncol(taxinfo_matrix))],2, function(z) !any(z == 0))]
+  
+  return(taxinfo_matrix)
+}
+
+# Now Filter using semi_join the df_annual_taxes with the CORE zone
+# Select only those in df_annual_taxes which have PARCEL_IDs in df_buffer_CORE
+df_annual_taxes_CORE <- semi_join(df_annual_taxes, df_buffer_CORE, by="PARCEL_ID")
+taxinfo_CORE.matrix  <- reshape.by.parcelid(df_annual_taxes_CORE)
+
+df_annual_taxes_CENTER <- semi_join(df_annual_taxes, df_buffer_CENTER, by="PARCEL_ID")
+df_annual_taxes_CENTER_all <- semi_join(df_all, df_buffer_CENTER, by="PARCEL_ID")
+
+taxinfo_CENTER.matrix  <- reshape.by.parcelid(df_annual_taxes_CENTER)
+
+df_annual_taxes_EDGE <- semi_join(df_annual_taxes, df_buffer_EDGE, by="PARCEL_ID")
+taxinfo_EDGE.matrix  <- reshape.by.parcelid(df_annual_taxes_EDGE)
