@@ -1,92 +1,64 @@
 README.md
 ================
 Rajesh Jagannath
-August 2, 2016
+April 30, 2017
 
 R Markdown
 ----------
 
-Street Car
+Impact on Total Market Value of Parcels: Introduction of the Street Car in Downtown Cincinnati
 ----------
 
-The Cincinnati Streetcar is a modern streetcar system designed to link major employment centers in downtown and uptown, connecting through Cincinnati's historic Over-the-Rhine neighborhood. It will operate 18 hours a day, 365 days a year.
+The Cincinnati Streetcar is a modern streetcar system designed to link major employment centers in downtown and uptown, connecting through Cincinnati's historic Over-the-Rhine neighborhood. It was introduced into service in August 2016. It operates 18 hours a day, 365 days a year. 
 
-### 1. What is the problem you want to solve?
+Impacts on the economy were expected and anticipated upon its introduction - some positive and some negative.
 
-Predict a “net positive effect” on economy in the buffer zone around the streetcar route.
+This project analyzes Total Market Value of the parcels in a buffer zone around the Streetcar route. Three spatial buffer-zones established by Cincinnati Area Geographic Systems(CAGIS). A random sample of parcels not in the Buffer-zone was compared. Polynomial Regression was used for prediction of MKT_TOTAL_VA L(Total Market Value). Data has been used with permission from the staff at CAGIS. Using ClustofVars library, clusters of parcels_ids with similar trends are grouped for study into k=12 clusters. Training sets and test sets are created. Error (Mean Absolute Percentage Error) is minimized to select the best model for prediction. Prediction and Visualization are performed. Insights are drawn  and report concludes with ideas for future work. 
 
-### 2. Who is your client and why do they care about this problem?
+# 
+I have selected this study as my capstone project submission for the [Springboard - Foundations to Data Science Course](https://www.springboard.com/workshops/data-science).
 
-The City of Cincinnati would be the client. Downtown is Cincinnati’s largest employment center, with approximately 70,000 people in the area every day. It has been proven in cities from Atlanta to Seattle that fixed rails in the ground with thousands of potential riders draw new storefronts and businesses, as well as fixed up housing. That new development will put people to work and boost the city’s tax revenue. Also, here may have been inconveniences to the neighborhood, during the construction phase.
+__Please refer to the__ [Final Project Report ](hhttps://github.com/krajeshj/Streetcar0719/blob/master/Reports/Final_Milestone/FinalReport_041617.pdf) for the full details of the problem and dataset.
 
-Hence, there are two camps of opinion -
+__A power point presentation of the project exists__ [Project Slides](https://github.com/krajeshj/Streetcar0719/blob/master/Reports/Final_Milestone/Final_ReportPresentation.pdf)
+ 
+ 
 
--   one opinion insists that the introduction of the streetcar is disruptive to the neighborhood ( crowding, transient population, noise) and
+### Files
 
--   The other opinion is that it provides easy access to business, shops, dining and commuting to work and home and draws new business, expansion of storefronts, revenue from ridership, permit fees, property tax and restaurant license fee.
+File|Description
+---------|-------------------------------------------------------------------------------------------------------------------
+taxinfoTimeSeries/taxinfoForecast_MKT_VAL.R| Main R Script for ETL, Clustering, Model selection, Prediction and Visualization 
+taxinfoTimeSeries/Buffer_parcels_ETL_MKT_VAL.R|ETL files for the 3 buffer zone CORE,CENTER and EDGE
+taxinfoTimeSeries/Assessors_yearly_data_ETL_MKT_VAL.R|ETL for loading 8 years of data 
+taxinfoTimeSeries/functions_MKT_VAL.R|Contains functions for Polynomial regression
+Data2_090216/Read_Position_delimited_File_from_tuple.R | reads in the the txt files in fixed width format
+Reports/Final_Milestone/FinalReport_041617.pdf|Final Report
+Reports/Final_Milestone/Final_ReportPresentation.pdf| Final Power point Presentation
+ 
 
-### 3. What data are you going to use for this? How will you acquire this data?
 
--   Data source would be from Open Data Cincinnati and CAGIS, City of Cincinnati, OH.
--   Identify a buffer zone around the street car route using parcel ids
--   CSV files for Center, Core and Edge zones
--   Obtain the data for Market value of the Land and Improvements ( tax info) for these parcels for the last 10 years (CSV)
 
-### 4. In brief, outline your approach to solving this problem (knowing that this might change later).
-
--   Clean the data
--   Define and build model
--   Establish criteria that defines the economic growth
--   Use historical property values for the last 10 years
--   Predict property value trends using Time series
--   Visualize using ggmap / ggplot
-
-### 5. What are your deliverables?
-
--   Marked up Code in the github
--   Slide-deck with Analysis and Visualization
+Directory|Description
+---------|---------------------------------------------------------------------------------------------------
+Data2_090216|Contains datasets
+Data2_090216/parcel_csv| contains the parcel ids of the parcels in Buffer Parcel (csv files)
+Data2_090216/taxinfo| contains the 9 years of data including MKT_TOTAL_VAL (txt file - fixed width format)
+taxinfoTimeSeries| Contains the main code
+Reports/Final_Milestone | The final reports are archived here
+Reports/Final_Milestone/Plots | contains all the supporting plots generated in the study
+Reports/Final_Milestone/Final_ReportPresentation.pdf|Contains the shape files for depicting the streetcar and the buffer zones on a gglpt
+ 
 
 ### References
 
 1.  <https://dev.socrata.com/foundry/data.cincinnati-oh.gov/emnx-rw6d>
-
 2.  <http://www.cincinnati.com/story/news/2016/05/05/streetcar-nation-kc-opens-friday-cincy-next/83874740/>
+3.	<https://cran.r-project.org/web/packages/ClustOfVar/ClustOfVar.pdf>
+4.	<http://www.exegetic.biz/blog/2013/12/contour-and-density-layers-with-ggmap/>
+5.	<http://www.shanelynn.ie/massive-geocoding-with-r-and-google-maps/>
+6.	<http://stat405.had.co.nz/ggmap.pdf>
+7.	A Little Book of R for Time-series, Avril Coghlan
+8.	An Introduction to Statistical Learning, Gareth James et al
 
-### DIRECTORIES/FILES :
 
--   CagisOpenDataQuaterly has shapefiles (.shx) files. The Address.shx would be the most useful one for rendering on a map.
--   Data2 is a directory containing the primary data-set. These contain 9 years( 2007-2015) worth of Property Taxes from the assessors office. These are CSV files that have been extracted from 'fixed-width-format' and converted to .csv file format. Each directory has the file format described in a pdf file.
-
--   streetcarbuffer\_parcels has two subdirs
-    -   gis\_shape\_files/gis\_shapeFiles\_studyarea\_Parcels : Used to mark the streetcars parcels
-    -   old\_csv files - they are old in the sense that these where first used for exploratory analysis and many records with no addresses were found
--   Trial Code : Has first R files with which we explored the data
-    -   Read\_Position\_delimited\_File.R converts fwf to .csv file
-    -   ReadShapeFile.R Read in streetcarbuffer\_parcels/gis\_shape\_files/gis\_shapeFiles\_studyarea\_Parcels/CENTER\_EDGE\_CORE\_PARCELS.shx shape files and rasterizes them into a plot
--   Map\_HeatMap\_PropVal.R Exploratory Data Analysis to create a density plot based on csv files( old\_csv\_files were used
-
--   ReadStreetcCarDataSets.R : Read three CSV files in the 1000ft Bufferzones - CORE, CENTER and EDGE We select interesting features form the data from the frame viz.
-
-                              PARCELID   Unique identifier Parcel id   
-
-                              EXLUCODE    Existing Land Use Code, Multi-family, commercial, Parks  
-
-                              MKTLND      Market Value of the Land   
-
-                              MKTIMP      Market value of the Improvements   
-
-                              MKT_TOTAL_  Total Value      
-
-                              SALDAT      Sale Date           
-
-                              SALAMT      Sale Amount        
-
-                              FORECL_FLA  Foreclosure Flag    
-
-                              AREA        Area               
-
-                              ACRES       Acres                                                      
-
-------------------------------------------------------------------------
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

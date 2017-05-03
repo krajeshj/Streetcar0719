@@ -1,5 +1,5 @@
 #!/bin/bash
-for fn in `cat filenames.txt`; do
+for fn in `cat code_files.txt`; do
     echo "the next file is $fn"
     git lfs push origin master $fn
     echo "Done $fn"
