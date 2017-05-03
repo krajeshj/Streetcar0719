@@ -1,4 +1,11 @@
-# This program reads in the excel spreadsheets for Tax and Sales Data
+# This program Performs a Prediction of MKT_TOTAL_VAL 
+# Author : K. Rajesh Jaganath
+# Uses   : functions_MKT_VAL.R
+# Uses   : Assessors_yearly_data_ETL_MKT_VAL.R
+# Uses   : Buffer_parcels_ETL_MKT_VAL.R
+# Uses   : streetcarbuffer_parcels/gis_shape_files/StreetCar
+# Final Project submitted : 4/30/2017
+#
 
 library(dplyr)
 library(tidyr)
@@ -20,6 +27,7 @@ library(maptools)
 library(rgdal)
 
 set.seed(100)
+options(scipen=12)
 #
 # Analysis is done on non_buffer_zone as well as CORE, CENTER and EDGE buffer zones
 # set skip_non_buffer = 1 to skip directly to CORE, CENTER and EDGE analysis
@@ -95,17 +103,11 @@ if(skip_1500 == 0) {
 
 n <- ncol(taxinfo.matrix_no_na)
 taxinfo.matrix_shuffled <- taxinfo.matrix_no_na[,sample(n) ]
-#0.01248  is 2500 values
+#0.0051699 of 241748 observations is 1249
 train_indices <- 1:round(0.0051699 * n)
 train <- taxinfo.matrix_shuffled[,train_indices ]
 
 
-
-
-  
-  
-  
-  
   
 Clustvar1500 <-hclustvar(train)
 plot(Clustvar1500)
@@ -126,6 +128,7 @@ rect.hclust(Clustvar1500,k=12, border="red")
 
 
 # Could not get a graph : Make a rough partition of 12 clusters
+
 part1500 <- cutreevar(Clustvar1500,12)
 plot(Clustvar1500$height)
  
@@ -197,15 +200,12 @@ print("NON BUFFER ZONE : Years 2015-2018 serve as test data for validation")
   
   for ( clst in c(seq(1:12))) {
    
-  #df_mape_clusters <- plot_act_pred(clst,a, taxinfo.matrix, poly_order)
    df_mape_train_clusters <- plot_act_pred_trg(clst,a, taxinfo.matrix[c(1:6),], poly_order)
    df_mape_test_clusters  <- plot_act_pred_test(clst,a, taxinfo.matrix[c(1:6),], taxinfo.matrix[c(7:8),], poly_order)
   
   if (clst == 1) {
-    df_mape_train_clst_poly <- df_mape_train_clusters["mape"]
+    # df_mape_train_clst_poly <- df_mape_train_clusters["mape"]
     df_actpred_train_clst_poly <- df_mape_train_clusters["act_pred"]
-    
-    
     df_mape_test_clst_poly <- df_mape_test_clusters["mape"]
      
      
@@ -213,7 +213,7 @@ print("NON BUFFER ZONE : Years 2015-2018 serve as test data for validation")
   else {
     
      
-    df_mape_train_clst_poly <- bind_rows(df_mape_train_clst_poly, df_mape_train_clusters["mape"])
+    #df_mape_train_clst_poly <- bind_rows(df_mape_train_clst_poly, df_mape_train_clusters["mape"])
     df_actpred_train_clst_poly <- bind_rows(df_actpred_train_clst_poly, df_mape_train_clusters["act_pred"])
     
     
@@ -222,7 +222,7 @@ print("NON BUFFER ZONE : Years 2015-2018 serve as test data for validation")
   }
   
   if (poly_order == 1) {
-     df_mape_train_all <- df_mape_train_clst_poly
+     #df_mape_train_all <- df_mape_train_clst_poly
      df_actpred_train_all <- df_actpred_train_clst_poly
      
      
@@ -231,7 +231,7 @@ print("NON BUFFER ZONE : Years 2015-2018 serve as test data for validation")
     } 
   else 
      {
-      df_mape_train_all <- bind_rows(df_mape_train_all, df_mape_train_clst_poly) 
+      #df_mape_train_all <- bind_rows(df_mape_train_all, df_mape_train_clst_poly) 
       df_actpred_train_all <- bind_rows(df_actpred_train_all, df_actpred_train_clst_poly) 
       
       df_mape_test_all <- bind_rows(df_mape_test_all, df_mape_test_clst_poly) 
@@ -248,7 +248,7 @@ print("NON BUFFER ZONE : Computing MAPE - Mean Absolute Percentage error")
 
 # Chart the actuals and predicted for the different clusters
 
-print("BUFFER ZONE: Plotting the Actual vs. Fitted for Training set ")
+print("NON BUFFER ZONE: Plotting the Actual vs. Fitted for Training set ")
 
 
 for( poly_order in c(seq(1:5))){
@@ -259,21 +259,22 @@ for( poly_order in c(seq(1:5))){
 } # poly_order
 
 
-# Evaluate the Mean Absolute Percentage error
+# Evaluate the Mean Absolute Percentage error(MAPE)
 # Training data
-# Years 2007 - 2012
-plot_mape_chart(df_mape_train_all, "non Buffer zone : training data")
+# Years 2007-2012
+#plot_mape_chart(df_mape_train_all, "non Buffer zone : training data")
 
-#Evaluate the MAPE for 
+# Evaluate the MAPE for 
 # Testing data 
 # years 2013-2014
+
 plot_mape_chart(df_mape_test_all, "non Buffer zone : test data")
 
 print("NON BUFFER ZONE :  Plotting MKT_TOT_VAL source and predicted data")
 print("NON BUFFER ZONE :  Creating df_final_mkt_val data frame for later Visualization")
 
 
-for( poly_order in c(seq(1:3))){
+for( poly_order in c(seq(1:5))){
   
   # facet the clusters on a single plot 
   # visualize  fitted and predicted
@@ -299,7 +300,7 @@ print("EDGE BUFFER ZONE :  Training Data - Dendogram")
 #then random 100 columns
 n <- ncol(taxinfo_EDGE.matrix_no_na)
 taxinfo_EDGE.matrix_shuffled <- taxinfo_EDGE.matrix_no_na[,sample(n) ]
-#0.7   is 561 values
+#0.7   is 813 values
 train_indices <- 1:round(0.7 * n)
 train <- taxinfo_EDGE.matrix_shuffled[,train_indices ]
 
@@ -375,9 +376,9 @@ for( poly_order in c(seq(1:5))){
     
     
      
-     df_mape_train_CORE_parcels   <- plot_act_pred_trg(clst,a_CORE,  taxinfo_CORE.matrix[c(1:6),], poly_order)
-     df_mape_train_CENTER_parcels <- plot_act_pred_trg(clst,a_CENTER,  taxinfo_CENTER.matrix[c(1:6),], poly_order)
-     df_mape_train_EDGE_parcels   <- plot_act_pred_trg(clst,a_EDGE,  taxinfo_EDGE.matrix[c(1:6),], poly_order)
+      df_mape_train_CORE_parcels   <- plot_act_pred_trg(clst,a_CORE,  taxinfo_CORE.matrix[c(1:6),], poly_order)
+      df_mape_train_CENTER_parcels <- plot_act_pred_trg(clst,a_CENTER,  taxinfo_CENTER.matrix[c(1:6),], poly_order)
+      df_mape_train_EDGE_parcels   <- plot_act_pred_trg(clst,a_EDGE,  taxinfo_EDGE.matrix[c(1:6),], poly_order)
      
      
      
@@ -413,10 +414,10 @@ for( poly_order in c(seq(1:5))){
     }
     else {
        
-       df_mape_train_CORE_clst_poly <- bind_rows(df_mape_train_CORE_clst_poly,     df_mape_train_CORE_parcels["mape"])
-       df_mape_train_CENTER_clst_poly <- bind_rows(df_mape_train_CENTER_clst_poly,     df_mape_train_CENTER_parcels["mape"])
-       df_mape_train_EDGE_clst_poly <- bind_rows(df_mape_train_EDGE_clst_poly,     df_mape_train_EDGE_parcels["mape"])
-      
+        #df_mape_train_CORE_clst_poly <- bind_rows(df_mape_train_CORE_clst_poly,     df_mape_train_CORE_parcels["mape"])
+        #df_mape_train_CENTER_clst_poly <- bind_rows(df_mape_train_CENTER_clst_poly,     df_mape_train_CENTER_parcels["mape"])
+        #df_mape_train_EDGE_clst_poly <- bind_rows(df_mape_train_EDGE_clst_poly,     df_mape_train_EDGE_parcels["mape"])
+        
        
         
        df_actpred_train_CORE_clst_poly <- bind_rows(df_actpred_train_CORE_clst_poly,     df_mape_train_CORE_parcels["act_pred"])
@@ -438,9 +439,9 @@ for( poly_order in c(seq(1:5))){
   if (poly_order == 1) {
     
     
-    df_mape_train_CORE_all   <- df_mape_train_CORE_clst_poly
-    df_mape_train_CENTER_all <- df_mape_train_CENTER_clst_poly
-    df_mape_train_EDGE_all   <- df_mape_train_EDGE_clst_poly 
+     #df_mape_train_CORE_all   <- df_mape_train_CORE_clst_poly
+     #df_mape_train_CENTER_all <- df_mape_train_CENTER_clst_poly
+     #df_mape_train_EDGE_all   <- df_mape_train_EDGE_clst_poly 
     
     df_actpred_train_CORE_all   <- df_actpred_train_CORE_clst_poly
     df_actpred_train_CENTER_all <- df_actpred_train_CENTER_clst_poly
@@ -461,9 +462,9 @@ for( poly_order in c(seq(1:5))){
   else 
   {
    
-    df_mape_train_CORE_all <- bind_rows(df_mape_train_CORE_all, df_mape_train_CORE_clst_poly) 
-    df_mape_train_CENTER_all <- bind_rows(df_mape_train_CENTER_all, df_mape_train_CENTER_clst_poly) 
-    df_mape_train_EDGE_all <- bind_rows(df_mape_train_EDGE_all, df_mape_train_EDGE_clst_poly)  
+    # df_mape_train_CORE_all <- bind_rows(df_mape_train_CORE_all, df_mape_train_CORE_clst_poly) 
+    # df_mape_train_CENTER_all <- bind_rows(df_mape_train_CENTER_all, df_mape_train_CENTER_clst_poly) 
+    # df_mape_train_EDGE_all <- bind_rows(df_mape_train_EDGE_all, df_mape_train_EDGE_clst_poly)  
     
     df_actpred_train_CORE_all <- bind_rows(df_actpred_train_CORE_all, df_actpred_train_CORE_clst_poly) 
     df_actpred_train_CENTER_all <- bind_rows(df_actpred_train_CENTER_all, df_actpred_train_CENTER_clst_poly) 
@@ -486,26 +487,26 @@ for( poly_order in c(seq(1:5))){
 }
 
 
-print("BUFFER ZONE: Plotting the Actual vs. Fitted for Training set ")
-
-
-for( poly_order in c(seq(1:5))){
-  
-  plot_actpred_chart(df_actpred_train_CORE_all, " CORE BUFFER ZONE training set ",poly_order)
-  plot_actpred_chart(df_actpred_train_CENTER_all, " CENTER BUFFER ZONE training set", poly_order)
-  plot_actpred_chart(df_actpred_train_EDGE_all, " EDGE BUFFER ZONE training set ", poly_order)
-  
-} # poly_order
+# print("BUFFER ZONE: Plotting the Actual vs. Fitted for Training set ")
+# 
+# 
+# for( poly_order in c(seq(1:5))){
+#   
+#   plot_actpred_chart(df_actpred_train_CORE_all, " CORE BUFFER ZONE training set ",poly_order)
+#   plot_actpred_chart(df_actpred_train_CENTER_all, " CENTER BUFFER ZONE training set", poly_order)
+#   plot_actpred_chart(df_actpred_train_EDGE_all, " EDGE BUFFER ZONE training set ", poly_order)
+#   
+# } # poly_order
   
 print("BUFFER ZONE: Plotting the mape charts ")
 
 # Plot the mape chart for the buffer zones
  
 
-plot_mape_chart(df_mape_train_CORE_all, " CORE BUFFER ZONE training set data")
-plot_mape_chart(df_mape_train_CENTER_all, " CENTER BUFFER ZONE training set  data")
-plot_mape_chart(df_mape_train_EDGE_all, " EDGE BUFFER ZONE training set data")
-
+# plot_mape_chart(df_mape_train_CORE_all, " CORE BUFFER ZONE training set data")
+# plot_mape_chart(df_mape_train_CENTER_all, " CENTER BUFFER ZONE training set  data")
+# plot_mape_chart(df_mape_train_EDGE_all, " EDGE BUFFER ZONE training set data")
+# 
 
 
 
@@ -513,6 +514,12 @@ plot_mape_chart(df_mape_test_CORE_all, " CORE BUFFER ZONE test set data")
 plot_mape_chart(df_mape_test_CENTER_all, " CENTER BUFFER ZONE test set  data")
 plot_mape_chart(df_mape_test_EDGE_all, " EDGE BUFFER ZONE test set data")
 
+
+
+# Write out to csv files
+write.csv(df_mape_test_CORE_all, file = "test_set_mape_CORE.csv" )
+write.csv(df_mape_test_CENTER_all, file = "test_set_mape_CENTER.csv" )
+write.csv(df_mape_test_EDGE_all, file = "test_set_mape_EDGE.csv" )
 
 print( "BUFFER_ZONE : Faceting over  clusters for each zone")
 # facet the clusters on a single plot 
@@ -523,40 +530,40 @@ print( "BUFFER_ZONE : Faceting over  clusters for each zone")
 # EDGE
 ######
 
+# here  all of the  Buffer zone parcel ids are partitioned into clusters
 
-#then random 100 columns
+# Find the number of observations
 n <- ncol(taxinfo_EDGE.matrix_no_na)
-taxinfo_EDGE.matrix_shuffled <- taxinfo_EDGE.matrix_no_na[,sample(n) ]
-#0.7   is 561 values
+# Shuffle it
+ntaxinfo_EDGE.matrix_shuffled <- taxinfo_EDGE.matrix_no_na[,sample(n) ]
 train_indices <- 1:round(1.0 * n)
 train <- taxinfo_EDGE.matrix_shuffled[,train_indices ]
 
-
+# perform Clurtering of Vars / dimension reduction
 ClustvarEDGE100 <-hclustvar(train)
+# plot the dendogram
 plot(ClustvarEDGE100)
 rect.hclust(ClustvarEDGE100,k=12, border="red")
-
 partEDGE100 <- cutreevar(ClustvarEDGE100,12)
 
-
 a_EDGE <- partEDGE100$var
-
+# Height of ClustVarEDGE is plotted
 plot(ClustvarEDGE100$height)
-#stabEDGE100 <- stability(ClustvarEDGE100,B = 60, graph = TRUE)
 
+ 
 ######
 # CENTER
 ######
 
 
-#then random 100 columns
+# Find the number of observations and shuffle it
 n <- ncol(taxinfo_CENTER.matrix_no_na)
 taxinfo_CENTER.matrix_shuffled <- taxinfo_CENTER.matrix_no_na[,sample(n) ]
-#0.7   is 561 values
+#Take all of the observations
 train_indices <- 1:round(1.0 * n)
 train <- taxinfo_CENTER.matrix_shuffled[,train_indices ]
 
-
+# create a dendogram
 ClustvarCENTER100 <-hclustvar(train)
 plot(ClustvarCENTER100)
 rect.hclust(ClustvarCENTER100,k=12, border="red")
@@ -564,22 +571,23 @@ rect.hclust(ClustvarCENTER100,k=12, border="red")
 partCENTER100 <- cutreevar(ClustvarCENTER100,12)
 
 a_CENTER <- partCENTER100$var
-plot(ClustvarCENTER100$height)
-#stab100 <- stability(Clustvar100,B = 60, graph = TRUE)
 
+# plot the height
+plot(ClustvarCENTER100$height)
+ 
 ######
 # CORE
 ######
 
 
-#then random 100 columns
+#Take all of the observations and shuffle them
 n <- ncol(taxinfo_CORE.matrix_no_na)
 taxinfo_CORE.matrix_shuffled <- taxinfo_CORE.matrix_no_na[,sample(n) ]
-#0.7   is 561 values
+
 train_indices <- 1:round(1.0 * n)
 train <- taxinfo_CORE.matrix_shuffled[,train_indices ]
 
-
+# Perform Dimension reduction 
 ClustvarCORE100 <-hclustvar(train)
 plot(ClustvarCORE100)
 partCORE100 <- cutreevar(ClustvarCORE100,12)
@@ -592,10 +600,10 @@ plot(ClustvarCORE100$height)
 print("BUFFER_ZONE Completed dendograms for all the parcels")
 
 
-print("BUFFER_ZONE Visualize Source Data and Predicted in the same plot")
+print("BUFFER_ZONE - Source Data and Predicted in the same plot")
 
 
-for( poly_order in c(seq(1:3))){
+for( poly_order in c(seq(1:5))){
 
   # facet the clusters on a single plot 
   # visualize  source and predicted
@@ -607,7 +615,7 @@ for( poly_order in c(seq(1:3))){
   { df_final_mkt_val <- bind_rows(df_final_mkt_val, df_final_mkt_val_core )}
 }
 
-for( poly_order in c(seq(1:3))){
+for( poly_order in c(seq(1:5))){
   
   # facet the clusters on a single plot 
   # visualize  source and predicted
@@ -616,7 +624,7 @@ for( poly_order in c(seq(1:3))){
   df_final_mkt_val <- bind_rows(df_final_mkt_val, df_final_mkt_val_center )
 }
 
-for( poly_order in c(seq(1:3))){
+for( poly_order in c(seq(1:5))){
   
   # facet the clusters on a single plot 
   # visualize  source and predicted
@@ -633,6 +641,12 @@ df_final_mkt_val$date <- as.factor(df_final_mkt_val$date)
 
 # Also find the mkt_total/ cluster = ( mkt_val_mean/cluster  * num_parcel_ids/cluster)
 df_final_mkt_val <- df_final_mkt_val %>% mutate(mkt_total = mkt_val * num_parcel_ids)
+
+# Write out to csv files
+write.csv(df_final_mkt_val, file = "final_mkt_val.csv" )
+
+
+
 print(" ZONE UNDER STUDY : Final plot ")
 
 
@@ -684,8 +698,7 @@ df_fin_2 <- df_final_mkt_val %>% filter((zone %in% c("CENTER","EDGE")))
 
 n3 <- NULL
 # Data Layer
-#title <- paste0("MKT TOTAL VALUE  in different ZONEs ")
-
+ 
 title <- paste0("MKT TOTAL VALUE in different ZONEs CENTER and EDGE ")
 
 
@@ -761,15 +774,21 @@ n3 <- n3 +facet_wrap( ~ zone)
 print(n3)
 
 
-# Identify clusters with growth
-
+# Identify clusters with growth in CENTER
 cluster_max_val_parcels_CENTER <- remove_char_X(rownames(partCENTER100$var[[2]]))
+# Identify clusters with decline in CENTER
+cluster_declining_val_parcels_CENTER <- remove_char_X(rownames(partCENTER100$var[[1]]))
 
+# Identify clusters with growth
 cluster_max_val_parcels_EDGE <- remove_char_X(rownames(partEDGE100$var[[8]]))
+# Identify clusters with growth
+cluster_declining_val_parcels_EDGE <- remove_char_X(rownames(partEDGE100$var[[7]]))
 
+# Cluster1  in Core  showing declinging trend
+cluster_max_val_parcels_CORE <- remove_char_X(rownames(partCORE100$var[[1]] ))
+# Cluster1  in Core  showing declinging trend
+cluster_growing_val_parcels_CORE <- remove_char_X(rownames(partCORE100$var[[11]]))
 
-
-cluster_max_val_parcels_CORE <- remove_char_X(rownames(partCORE100$var[[11]]))
 
 cluster_max_val_parcels_NON_BFR <- remove_char_X(rownames(part1500$var[[5]]))
 
@@ -802,7 +821,7 @@ data <- fortify(shp_file_streetcar)
 myMap <- get_map(location="1208 Sycamore st, Cincinnati,OH", source="google", maptype="roadmap", crop=FALSE, zoom = 15)
 title <- paste0("Density of Clusters of parcels with growing MKT_VAL in EDGE ")
 
-
+# Growth 
 df_cluster_max_val_EDGE <- as.data.frame(cluster_max_val_parcels_EDGE)
 colnames(df_cluster_max_val_EDGE)<- c("PARCEL_ID")
 df_cluster_max_val_EDGE <- semi_join(df_buffer_EDGE,df_cluster_max_val_EDGE, by="PARCEL_ID")
@@ -816,6 +835,23 @@ CinciCAGISDensityMap <- CinciCAGISDensityMap + geom_polygon(aes(x = long, y = la
 CinciCAGISDensityMap <- CinciCAGISDensityMap + ggtitle(title)
 print(CinciCAGISDensityMap)
 
+#Decline
+myMap <- get_map(location="1208 Sycamore st, Cincinnati,OH", source="google", maptype="roadmap", crop=FALSE, zoom = 15)
+title <- paste0("Density of Clusters of parcels with declinging MKT_VAL in EDGE ")
+
+df_cluster_declining_val_EDGE <- as.data.frame(cluster_declining_val_parcels_EDGE)
+colnames(df_cluster_declining_val_EDGE)<- c("PARCEL_ID")
+df_cluster_declining_val_EDGE <- semi_join(df_buffer_EDGE,df_cluster_declining_val_EDGE, by="PARCEL_ID")
+
+CinciCAGISDensityMap <- ggmap(myMap)
+CinciCAGISDensityMap <- CinciCAGISDensityMap + stat_density2d(aes(x = as.numeric(cent_long), y = as.numeric(cent_lat), fill = ..level.., alpha = ..level..),  bins = 6, geom = "polygon", data = df_cluster_declining_val_EDGE)
+CinciCAGISDensityMap <- CinciCAGISDensityMap  + geom_point(data = df_cluster_declining_val_EDGE, aes(x = as.numeric(cent_long), y = as.numeric(cent_lat)), alpha = 1)
+CinciCAGISDensityMap <- CinciCAGISDensityMap + geom_polygon(aes(x = long, y = lat, group = group ), data = shp_file_streetcar,
+                                                            alpha = 1.0, size = 1.0, fill = 'red', color = 'blue')                                           
+
+CinciCAGISDensityMap <- CinciCAGISDensityMap + ggtitle(title)
+print(CinciCAGISDensityMap)
+
 # plot on MAPS for CENTER
 
 df_cluster_max_val_CENTER <- as.data.frame(cluster_max_val_parcels_CENTER)
@@ -823,7 +859,7 @@ colnames(df_cluster_max_val_CENTER)<- c("PARCEL_ID")
 df_cluster_max_val_CENTER <- semi_join(df_buffer_CENTER,df_cluster_max_val_CENTER, by="PARCEL_ID")
 
 myMap <- get_map(location="1208 Sycamore st, Cincinnati,OH", source="google", maptype="roadmap", crop=FALSE, zoom = 15)
-title <- paste0("Density of Clusters of parcels with growing MKT_VAL in CENTER ")
+title <- paste0("Density of Clusters of parcels with growingMKT_VAL in CENTER ")
 
 CinciCAGISDensityMap <- ggmap(myMap)
 CinciCAGISDensityMap <- CinciCAGISDensityMap + stat_density2d(aes(x = as.numeric(cent_long), y = as.numeric(cent_lat), fill = ..level.., alpha = ..level..), bins = 6, geom = "polygon", data = df_cluster_max_val_CENTER)
@@ -834,14 +870,29 @@ CinciCAGISDensityMap <- CinciCAGISDensityMap + geom_polygon(aes(x = long, y = la
                                                             alpha = 1.0, size = 1.0, fill = 'red', color = 'blue')
 print(CinciCAGISDensityMap)
 
- 
+# Cluster 1 has declining values
+df_cluster_declining_val_CENTER <- as.data.frame(cluster_declining_val_parcels_CENTER)
+colnames(df_cluster_declining_val_CENTER)<- c("PARCEL_ID")
+df_cluster_declining_val_CENTER <- semi_join(df_buffer_CENTER,df_cluster_declining_val_CENTER, by="PARCEL_ID")
+
+myMap <- get_map(location="1208 Sycamore st, Cincinnati,OH", source="google", maptype="roadmap", crop=FALSE, zoom = 15)
+title <- paste0("Density of Clusters of parcels with declining MKT_VAL in CENTER ")
+
+CinciCAGISDensityMap <- ggmap(myMap)
+CinciCAGISDensityMap <- CinciCAGISDensityMap + stat_density2d(aes(x = as.numeric(cent_long), y = as.numeric(cent_lat), fill = ..level.., alpha = ..level..), bins = 6, geom = "polygon", data = df_cluster_declining_val_CENTER)
+CinciCAGISDensityMap <- CinciCAGISDensityMap  + geom_point(data = df_cluster_declining_val_CENTER, aes(x = as.numeric(cent_long), y = as.numeric(cent_lat)), alpha = 1)
+
+CinciCAGISDensityMap <- CinciCAGISDensityMap + ggtitle(title)
+CinciCAGISDensityMap <- CinciCAGISDensityMap + geom_polygon(aes(x = long, y = lat, group = group ), data = shp_file_streetcar,
+                                                            alpha = 1.0, size = 1.0, fill = 'red', color = 'blue')
+print(CinciCAGISDensityMap)
 # plot on MAPS for CORE
 
 df_cluster_max_val_CORE <- as.data.frame(cluster_max_val_parcels_CORE)
 colnames(df_cluster_max_val_CORE)<- c("PARCEL_ID")
 df_cluster_max_val_CORE <- semi_join(df_buffer_CORE,df_cluster_max_val_CORE, by="PARCEL_ID")
 myMap <- get_map(location="1208 Sycamore st, Cincinnati,OH", source="google", maptype="roadmap", crop=FALSE, zoom = 15)
-title <- paste0("Density of Clusters of parcels with growing MKT_VAL in CORE ")
+title <- paste0("Density of Clusters of parcels in  with declining MKT_VAL in CORE ")
 
 CinciCAGISDensityMap <- ggmap(myMap)
 CinciCAGISDensityMap <- CinciCAGISDensityMap + stat_density2d(aes(x = as.numeric(cent_long), y = as.numeric(cent_lat), fill = ..level.., alpha = ..level..),    bins = 6, geom = "polygon", data = df_cluster_max_val_CORE)
@@ -852,4 +903,15 @@ CinciCAGISDensityMap <- CinciCAGISDensityMap + geom_polygon(aes(x = long, y = la
 print(CinciCAGISDensityMap)
 
 
- 
+df_cluster_growing_val_CORE <- as.data.frame(cluster_growing_val_parcels_CORE)
+colnames(df_cluster_growing_val_CORE)<- c("PARCEL_ID")
+df_cluster_max_val_CORE <- semi_join(df_buffer_CORE,df_cluster_growing_val_CORE, by="PARCEL_ID")
+myMap <- get_map(location="1208 Sycamore st, Cincinnati,OH", source="google", maptype="roadmap", crop=FALSE, zoom = 15)
+title <- paste0("Density of Clusters of parcels with increasing MKT_VAL in CORE ")
+CinciCAGISDensityMap <- ggmap(myMap)
+CinciCAGISDensityMap <- CinciCAGISDensityMap + stat_density2d(aes(x = as.numeric(cent_long), y = as.numeric(cent_lat), fill = ..level.., alpha = ..level..),    bins = 6, geom = "polygon", data = df_cluster_max_val_CORE)
+CinciCAGISDensityMap <- CinciCAGISDensityMap  + geom_point(data = df_cluster_max_val_CORE, aes(x = as.numeric(cent_long), y = as.numeric(cent_lat)), alpha = 1)
+CinciCAGISDensityMap <- CinciCAGISDensityMap + ggtitle(title)
+CinciCAGISDensityMap <- CinciCAGISDensityMap + geom_polygon(aes(x = long, y = lat, group = group ), data = shp_file_streetcar,
+                                                            alpha = 1.0, size = 0.3, fill = 'red', color = 'blue')
+print(CinciCAGISDensityMap)
