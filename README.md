@@ -47,7 +47,6 @@ Data2_090216/taxinfo| contains the 9 years of data including MKT_TOTAL_VAL (txt 
 taxinfoTimeSeries| Contains the main code
 Reports/Final_Milestone | The final reports are archived here
 Reports/Final_Milestone/Plots | contains all the supporting plots generated in the study
-Reports/Final_Milestone/Final_ReportPresentation.pdf|Contains the shape files for depicting the streetcar and the buffer zones on a gglpt
  
 
 ### References
