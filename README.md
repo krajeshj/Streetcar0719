@@ -3,7 +3,7 @@ README.md
 Rajesh Jagannath
 April 30, 2017
 
-R Markdown
+Springboard Final Project
 ----------
 
 Impact on Total Market Value of Parcels: Introduction of the Street Car in Downtown Cincinnati
@@ -13,7 +13,7 @@ The Cincinnati Streetcar is a modern streetcar system designed to link major emp
 
 Impacts on the economy were expected and anticipated upon its introduction - some positive and some negative.
 
-This project analyzes Total Market Value of the parcels in a buffer zone around the Streetcar route. Three spatial buffer-zones established by Cincinnati Area Geographic Systems(CAGIS). A random sample of parcels not in the Buffer-zone was compared. Polynomial Regression was used for prediction of MKT_TOTAL_VA L(Total Market Value). Data has been used with permission from the staff at CAGIS. Using ClustofVars library, clusters of parcels_ids with similar trends are grouped for study into k=12 clusters. Training sets and test sets are created. Error (Mean Absolute Percentage Error) is minimized to select the best model for prediction. Prediction and Visualization are performed. Insights are drawn  and report concludes with ideas for future work. 
+This project analyzes Total Market Value of the parcels in a buffer zone around the Streetcar route. Three spatial buffer-zones were established by Cincinnati Area Geographic Systems(CAGIS). A random sample of parcels not in the Buffer-zone were compared. Polynomial Regression was used for prediction of MKT_TOTAL_VAL(Total Market Value). Data was used with permission from the staff at CAGIS. Using ClustofVars library, clusters of parcels_ids with similar trends are grouped for analysis into k=12 clusters. Training sets and test sets were created. Error (Mean Absolute Percentage Error) was minimized on Test set to select the best model for prediction. Models were selected from one of linear, quadratic, cubic, 4th order or 5th order polynomial regression. Prediction and Visualization were performed. Insights were drawn  and report concluded with ideas for future work. 
 
 # 
 I have selected this study as my capstone project submission for the [Springboard - Foundations to Data Science Course](https://www.springboard.com/workshops/data-science).
