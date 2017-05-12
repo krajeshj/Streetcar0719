@@ -22,13 +22,13 @@ __Please refer to the__ [Final Project Report ](https://github.com/krajeshj/Stre
 
 __A power point presentation of the project exists__ [Project Slides](https://github.com/krajeshj/Streetcar0719/blob/master/Reports/Final_Milestone/Final_ReportPresentation.pdf)
  
- 
+__A output file of  main.Rmd is located here __ [main.html](https://github.com/krajeshj/Streetcar0719/blob/master/taxinfoTimeSeries/main.html)
 
 ### Files
 
 File|Description
 ---------|-------------------------------------------------------------------------------------------------------------------
-taxinfoTimeSeries/taxinfoForecast_MKT_VAL.R| Main R Script for ETL, Clustering, Model selection, Prediction and Visualization 
+taxinfoTimeSeries/main.R| Main R Script for ETL, Clustering, Model selection, Prediction and Visualization 
 taxinfoTimeSeries/Buffer_parcels_ETL_MKT_VAL.R|ETL files for the 3 buffer zone CORE,CENTER and EDGE
 taxinfoTimeSeries/Assessors_yearly_data_ETL_MKT_VAL.R|ETL for loading 8 years of data 
 taxinfoTimeSeries/functions_MKT_VAL.R|Contains functions for Polynomial regression
