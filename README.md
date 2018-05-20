@@ -18,13 +18,15 @@ This project analyzes Total Market Value of the parcels in a buffer zone around 
 # 
 I have selected this study as my capstone project submission for the [Springboard - Foundations to Data Science Course](https://www.springboard.com/workshops/data-science).
 
+# Final Report 
 __Please refer to the__ [Final Project Report ](https://github.com/krajeshj/Streetcar0719/blob/master/Reports/Final_Milestone/FinalReport_041617.pdf) for the full details of the problem and dataset.
 
+# Slide Deck
 __A power point presentation of the project exists__ [Project Slides](https://github.com/krajeshj/Streetcar0719/blob/master/Reports/Final_Milestone/Final_ReportPresentation.pdf)
- 
+ # Output
 __A output file of  main.Rmd is located here __ [main.html](https://github.com/krajeshj/Streetcar0719/blob/master/taxinfoTimeSeries/main.html)
 
-### Files
+# Files
 
 File|Description
 ---------|-------------------------------------------------------------------------------------------------------------------
